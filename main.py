@@ -6,7 +6,7 @@ from fastapi.encoders import jsonable_encoder
 # http://127.0.0.1:8000
 app = FastAPI()
 
-Steam_games_important = pd.read_parquet("C:/Users/crisr/OneDrive/Escritorio/Mateo/Programacion/SoyHenry/Proyecto_Individual_uno/carpeta_raiz/Datasets/Steam_games_endpoint_1.parquet")
+Steam_games_important = pd.read_parquet("Datasets/Steam_games_endpoint_1.parquet")
 
 @app.get("/")
 def index():
