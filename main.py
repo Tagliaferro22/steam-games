@@ -9,20 +9,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 # http://127.0.0.1:8000
 app = FastAPI()
 
-# Variables necesarias
-Steam_games_important = pd.read_parquet("Datasets\Steam_games_endpoint_1.parquet")
-juegos_steam = pd.read_parquet("Datasets\id_name_categorical_of_games.parquet")
-cv = CountVectorizer(max_features=15, stop_words='english')
-vector = cv.fit_transform(juegos_steam["categorical"]).toarray()
-similitud = cosine_similarity(vector)
-
 @app.get("/")
 def index():
     return {"Hello": "World"}
 
+
 def developer(desarrollador: str):
     salida = {}
-
+    Steam_games_important = pd.read_parquet("./Datasets/Steam_games_endpoint_1.parquet")
     # Imprimir información relevante antes del bucle
     print("Desarrollador:", desarrollador)
     print("Valores únicos de release_year:", Steam_games_important[Steam_games_important["developer"] == desarrollador]["release_year"].unique())
@@ -61,6 +55,12 @@ async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
 
 # Función que toma cómo argumento el ID de un juego y recomienda 5 similares
 def recomendacion_juego(id_juego):
+
+    juegos_steam = pd.read_parquet("./Datasets/id_name_categorical_of_games.parquet")
+
+    cv = CountVectorizer(max_features=15, stop_words='english')
+    vector = cv.fit_transform(juegos_steam["categorical"]).toarray()
+    similitud = cosine_similarity(vector)
 
     # Busca en 
     indice_juego = juegos_steam[juegos_steam["item_id"] == id_juego].index[0]
