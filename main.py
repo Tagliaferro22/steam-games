@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = FastAPI()
 
 # Variables necesarias
-Steam_games_important = pd.read_parquet("C:/Users/crisr/OneDrive/Escritorio/Mateo/Programacion/SoyHenry/Proyecto_Individual_uno/carpeta_raiz/Datasets/Steam_games_endpoint_1.parquet")
+Steam_games_important = pd.read_parquet("Datasets\Steam_games_endpoint_1.parquet")
 juegos_steam = pd.read_parquet("Datasets\id_name_categorical_of_games.parquet")
 cv = CountVectorizer(max_features=15, stop_words='english')
 vector = cv.fit_transform(juegos_steam["categorical"]).toarray()
