@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 import pandas as pd
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -47,7 +47,7 @@ def developer(desarrollador: str):
     return salida
 
 @app.get("/developer/{desarrollador}",response_model=dict)
-async def developer_use(desarrollador_local : str):
+async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
     try:
         resultado = developer(desarrollador_local)
         # Imprimir el resultado para depuración
@@ -68,20 +68,17 @@ def recomendacion_juego(id_juego):
     distancias = sorted(list(enumerate(similitud[indice_juego])), reverse=True, key=lambda x: x[1])
     
     juegos_recomendados = []
-    detalles_juego = []
-    salida = {}
 
     for i in distancias[1:6]:
         juegos_recomendados.append(juegos_steam.iloc[i[0]].item_name)
-        detalles_juego.append(juegos_steam.iloc[i[0]].categorical)
     
-    for i,j in enumerate(juegos_recomendados):
-        salida[j] = detalles_juego[i]
+    
 
-    return salida
+    return {"Juegos recomendados":juegos_recomendados}
+
 
 @app.get("/recomendacion_juego/{id_juego}",response_model=dict)
-async def recommend_use(id_local : str):
+async def recommend_use(id_local : str = Query(default="430240", description="Nombre del juego: Duplexer")):
     try:
         resultado = recomendacion_juego(id_local)
         # Imprimir el resultado para depuración
