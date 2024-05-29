@@ -13,8 +13,7 @@ de los archivos, que estaban comprimidos en un formato que desconocía (.gzip); 
 que aplicar varios procesos de ETL para poder desanidar algunas de las columnas que traían originalmente, que en su interior
 contenían varias anidadas.
 
-[Imagen de tirar del ovillo]
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/data_science.jpg)
+![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/ovillo.jpg)
 
 ---
 
@@ -30,8 +29,8 @@ Para darle "vida" a la API, usé un framework llamado FastAPI con el que pude de
 ---
 
 Para la primera función la consigna era la siguiente:
-[Imagen de consigna endpoint 1]
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/data_science.jpg)
+![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/endpoint1.png)
+
 Entonces desarrolle una función que hace lo siguiente: Primero, evalúa si el desarrollador ingresado en la función existe en el dataset, si no existe, lanza el siguiente error: "Developer not found". Si el desarrollador si existe en el dataset, la función ingresa en un bucle que itera sobre cada año de manera única en los que el desarrollador sacó al menos un videojuego. 
 Por ejemplo, si en 2015 sacó 3 juegos, en 2016 sacó 2 y en 2017 sacó 4, esos años aparecen 3, 2 y 4 veces respectivamente, por lo cuál, lo que hace el bucle es tomar esos años cómo valores únicos, apareciendo sólo una vez el 2015, el 2016 y el 2017.
 
@@ -49,8 +48,8 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
 ---
 
 Para el sistema de recomendación, la consigna era la siguiente:
-[Imagen de consigna de sist recomendación]
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/data_science.jpg)
+
+![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/modeloML.png)
 Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
 
 ---
