@@ -28,6 +28,12 @@ Para darle "vida" a la API, usé un framework llamado FastAPI con el que pude de
 
 ---
 
+Tecnologías que utilicé:
+*Python
+*Visual Studio Code
+*
+
+---
 Para la primera función la consigna era la siguiente:
 ![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/endpoint1.png)
 
