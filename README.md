@@ -2,9 +2,9 @@ En este proyecto, desarrollo el rol de un Data Scientist de Steam, una plataform
 
 ---
 
+![Logo_steam][(https://github.com/Tagliaferro22/steam-games/blob/main/img/logo_steam.jpg)]
 
-[Imagen de Data Science]
-[Imagen del logo de steam]
+https://github.com/Tagliaferro22/steam-games/blob/main/img/logo_steam.jpg
 
 ---
 
