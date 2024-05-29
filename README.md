@@ -38,6 +38,7 @@ Tecnologías que utilicé:
 - FastAPI
 - Ast
 - Matplotlib
+- Render
 
 
 ---
