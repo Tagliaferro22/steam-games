@@ -29,9 +29,16 @@ Para darle "vida" a la API, usé un framework llamado FastAPI con el que pude de
 ---
 
 Tecnologías que utilicé:
-*Python
-*Visual Studio Code
-*
+- Python
+- Visual Studio Code
+- Pandas
+- Numpy
+- Scikit-learn
+- Uvicorn
+- FastAPI
+- Ast
+- Matplotlib
+
 
 ---
 Para la primera función la consigna era la siguiente:
