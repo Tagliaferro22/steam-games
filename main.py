@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
+import numpy as np
 
 # http://127.0.0.1:8000
 app = FastAPI()
@@ -53,6 +53,75 @@ async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
         print("Error:", str(e))
         raise HTTPException(status_code=500, detail=f"Error al leer el archivo Parquet: {str(e)}")
 
+def user_data(user_id):
+    try:
+        user_id_str = str(user_id)
+        # Cargamos los dataframes dentro de la función
+        user_items = pd.read_parquet("./Datasets/user_items_endpoint_2.parquet")
+        user_reviews = pd.read_parquet("./Datasets/user_reviews_endpoint_2.parquet")
+        usuario_juego_precio = pd.read_parquet("./Datasets/steam_games_and_users_endpoint_2.parquet")
+        print("Archivos leídos correctamente")
+        diccionario_de_retorno = {} # Diccionario que va a almacenar las variables correspondientes a la salida de la función
+
+        if user_items[user_items["user_id"] == user_id_str].empty: # En caso de que no haya usuarios con el ID ingresado, se muestra lo siguiente:
+            return {"Detail":"No se encontraron datos para el usuario con ID: " + user_id_str}
+        else: # En caso de que haya usuarios con el ID ingresado, se muestra lo siguiente
+            print("Condicional pasado exitosamente")
+            # Se cuenta la cantidad de juegos que tiene el usuario
+            cantidad_juegos = user_items[user_items["user_id"] == user_id_str]["user_id"].count()
+
+            print(f"Cantidad de juegos: {cantidad_juegos}, Tipo: {type(cantidad_juegos)}")
+            # Se cuenta la cantidad de recomendaciones. En la columna recommend aparece "True" o "False", tuve en cuenta sólo las que aparece "True" del usuario ingresado.
+            cantidad_de_recomendaciones = user_reviews[(user_reviews["user_id"] == user_id_str) & (user_reviews["recommend"] == True)]["recommend"].count()
+
+            print(f"Cantidad de recomendaciones: {cantidad_de_recomendaciones}, Tipo: {type(cantidad_de_recomendaciones)}")
+            # Se cuenta la cantidad de dinero gastado por el usuario, haciendo una suma de la columna "price" de los juegos que tiene el usuario. 
+            cantidad_dinero_gastado = usuario_juego_precio[usuario_juego_precio["user_id"] == user_id_str]["price"].sum()
+
+            print(f"Cantidad de dinero gastado: {cantidad_dinero_gastado}, Tipo: {type(cantidad_dinero_gastado)}")
+            # A partir del ID ingresado, del dinero gastado, del porcentaje de recomendación, y de la cantidad de juegos, se almacenan en el diccionario previamente creado con las claves correspondientes.
+            diccionario_de_retorno["Usuario"] = user_id_str
+            print("Primera parte del diccionario hecha")
+            diccionario_de_retorno["Dinero gastado"] = f"{round(cantidad_dinero_gastado, 2)} USD"
+            print("Segunda parte del diccionario hecha")
+            # Si el usuario no hizo recomendaciones, para no tener errores de división por 0, defino que el porcentaje de recomendación es de 0%
+            if cantidad_de_recomendaciones == 0:
+                porcentaje_recomendacion = 0
+                diccionario_de_retorno["Porcentaje de recomendación"] = f"{porcentaje_recomendacion}%"
+            else:
+                # Si hizo recomendaciones, se hace el calculo normalmente
+                porcentaje_recomendacion = round((cantidad_de_recomendaciones * 100) / cantidad_juegos, 2)
+                diccionario_de_retorno["Porcentaje de recomendación"] = f"{porcentaje_recomendacion}%"
+
+            print(f"Porcentaje de recomendación: {diccionario_de_retorno['Porcentaje de recomendación']}, Tipo: {type(porcentaje_recomendacion)}")
+            print("Tercera parte del diccionario hecha")
+            diccionario_de_retorno["Cantidad de juegos"] = cantidad_juegos
+            print("Cuarta parte del diccionario hecha")
+            
+            # Se devuelve el diccionario creado
+            return diccionario_de_retorno
+        
+    except FileNotFoundError as e:
+        print(f"Error: {str(e)}")
+        raise HTTPException(status_code=404, detail=f"Archivo Parquet no encontrado: {str(e)}")
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
+    
+@app.get("/user_data/{user_id}",response_model=dict)
+async def recommend_use(user_id : str):
+    try:
+        resultado = user_data(user_id)
+        resultado = {k: (int(v) if isinstance(v, np.integer) else float(v) if isinstance(v, np.floating) else v) for k, v in resultado.items()}
+        return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print("Error inesperado:", str(e))
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+    
+
+
 # Función que toma cómo argumento el ID de un juego y recomienda 5 similares
 def recomendacion_juego(id_juego):
 
@@ -89,58 +158,3 @@ async def recommend_use(id_local : str = Query(default="430240", description="No
     except Exception as e:
         print("Error:", str(e))
         raise HTTPException(status_code=500, detail=f"Error al leer el archivo Parquet: {str(e)}")
-
-def user_data(user_id):
-    try:
-        # Cargamos los dataframes dentro de la función
-        user_items = pd.read_parquet("./Datasets/user_items_endpoint_2.parquet")
-        user_reviews = pd.read_parquet("./Datasets/user_reviews_endpoint_2.parquet")
-        usuario_juego_precio = pd.read_parquet("./Datasets/steam_games_and_users_endpoint_2.parquet")
-
-        diccionario_de_retorno = {} # Diccionario que va a almacenar las variables correspondientes a la salida de la función
-
-        if user_items[user_items["user_id"] == str(user_id)].empty: # En caso de que no haya usuarios con el ID ingresado, se muestra lo siguiente:
-            return "No se encontraron datos para el usuario con ID: " + str(user_id)
-        else: # En caso de que haya usuarios con el ID ingresado, se muestra lo siguiente
-
-            # Se cuenta la cantidad de juegos que tiene el usuario
-            cantidad_juegos = user_items[user_items["user_id"] == str(user_id)]["user_id"].count()
-
-            # Se cuenta la cantidad de recomendaciones. En la columna recommend aparece "True" o "False", tuve en cuenta sólo las que aparece "True" del usuario ingresado.
-            cantidad_de_recomendaciones = user_reviews[(user_reviews["user_id"] == str(user_id)) & user_reviews["recommend"] == True]["recommend"].count()
-
-            # Se cuenta la cantidad de dinero gastado por el usuario, haciendo una suma de la columna "price" de los juegos que tiene el usuario. 
-            cantidad_dinero_gastado = usuario_juego_precio[usuario_juego_precio["user_id"] == str(user_id)]["price"].sum()
-
-            # A partir del ID ingresado, del dinero gastado, del porcentaje de recomendación, y de la cantidad de juegos, se almacenan en el diccionario previamente creado con las claves correspondientes.
-            diccionario_de_retorno["Usuario"] = user_id
-            diccionario_de_retorno["Dinero gastado"] = f"{round(cantidad_dinero_gastado, 2)} USD"
-
-            # Si el usuario no hizo recomendaciones, para no tener errores de división por 0, defino que el porcentaje de recomendación es de 0%
-            if cantidad_de_recomendaciones == 0:
-                diccionario_de_retorno["Porcentaje de recomendaciones"] = "0%"
-            else:
-                # Si hizo recomendaciones, se hace el calculo normalmente
-                diccionario_de_retorno["Porcentaje de recomendación"] = f"{round((cantidad_de_recomendaciones * 100) / cantidad_juegos, 2)}%"
-            
-            diccionario_de_retorno["Cantidad de juegos"] = cantidad_juegos
-            
-            # Se devuelve el diccionario creado
-            return diccionario_de_retorno
-    except FileNotFoundError as e:
-        print(f"Error: {str(e)}")
-        raise HTTPException(status_code=404, detail=f"Archivo Parquet no encontrado: {str(e)}")
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
-    
-@app.get("/user_data/{user_id}",response_model=dict)
-async def recommend_use(id_local : str):
-    try:
-        resultado = user_data(id_local)
-        return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        print("Error inesperado:", str(e))
-        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
