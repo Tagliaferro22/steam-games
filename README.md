@@ -43,7 +43,7 @@ Tecnologías que utilicé:
 
 ---
 Para la primera función la consigna era la siguiente:
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/endpoint1.png)
+![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/endpoint_1.png)
 
 Entonces desarrolle una función que hace lo siguiente: Primero, evalúa si el desarrollador ingresado en la función existe en el dataset, si no existe, lanza el siguiente error: "Developer not found". Si el desarrollador si existe en el dataset, la función ingresa en un bucle que itera sobre cada año de manera única en los que el desarrollador sacó al menos un videojuego. 
 Por ejemplo, si en 2015 sacó 3 juegos, en 2016 sacó 2 y en 2017 sacó 4, esos años aparecen 3, 2 y 4 veces respectivamente, por lo cuál, lo que hace el bucle es tomar esos años cómo valores únicos, apareciendo sólo una vez el 2015, el 2016 y el 2017.
