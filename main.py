@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 import pandas as pd
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from typing import Optional
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
@@ -13,7 +14,7 @@ app = FastAPI()
 def index():
     return {"Hello": "World"}
 
-
+# Primer endpoint -------------------- 1
 def developer(desarrollador: str):
     salida = {}
     Steam_games_important = pd.read_parquet("./Datasets/Steam_games_endpoint_1.parquet")
@@ -53,6 +54,7 @@ async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
         print("Error:", str(e))
         raise HTTPException(status_code=500, detail=f"Error al leer el archivo Parquet: {str(e)}")
 
+# Segundo endpoint -------------------- 2
 def user_data(user_id):
     try:
         user_id_str = str(user_id)
@@ -109,7 +111,7 @@ def user_data(user_id):
         raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
     
 @app.get("/user_data/{user_id}",response_model=dict)
-async def recommend_use(user_id : str):
+async def recommend_use(user_id : Optional[str] = "sandwiches1 / 76561197970982474"):
     try:
         resultado = user_data(user_id)
         resultado = {k: (int(v) if isinstance(v, np.integer) else float(v) if isinstance(v, np.floating) else v) for k, v in resultado.items()}
@@ -120,6 +122,64 @@ async def recommend_use(user_id : str):
         print("Error inesperado:", str(e))
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
     
+# Tercer endpoint -------------------- 3
+def usuario_por_genero(genero): # Se ingresa el genero de vídeojuegos
+    try:
+
+        diccionario_de_salida = {} # Se crea el diccionario que posteriormente va a devolver la función cómo salida
+
+        steam_games_filtrable_por_genero = steam_games.explode("genres") # Se crea un nuevo dataframe a partir del original de vídeojuegos con el método .explode, lo cuál facilita que sea filtrado posteriormente por el genero ingresado.
+
+        juegos_con_el_genero_dado = steam_games_filtrable_por_genero[steam_games_filtrable_por_genero["genres"] == genero] # Se filtra el dataframe previamente creado por el genero ingresado en la función
+
+        juegos_con_el_genero_dado = juegos_con_el_genero_dado.drop(columns=["genres","release_date","descripción_temporal"]) # Se eliminan las columnas irrelevantes para optimizar el rendimiento de la función. 
+
+        juegos_con_el_genero_dado = juegos_con_el_genero_dado.sort_values("año_salida") # Se ordenan los juegos por el año de salida
+
+        usuarios_que_jugaron_juegos_con_el_genero_dado = pd.merge(juegos_con_el_genero_dado, user_items, on='item_id', how='inner') # Se unen los datafrmae de juegos con el genero ingresado con la función (juegos_con_el_genero_dado), con el de juegos que tienen los usuarios (user_items).
+
+        usuarios_que_jugaron_juegos_con_el_genero_dado.drop(columns=["item_id","item_name_y"], inplace=True) # Nuevamente se eliminan las columnas irrelevante para optimizar el rendimiento de la función
+
+        usuarios_del_genero_con_horas_sumadas = usuarios_que_jugaron_juegos_con_el_genero_dado.groupby(["user_id"]).sum().reset_index() # Se suman las horas de cada usuario de todos los juegos que jugó. EJ: Juan jugó dos juegos, 2 y 3 horas respectivamente, en total Juan jugó 5 horas.
+
+        jugador_del_genero_con_mas_horas = usuarios_del_genero_con_horas_sumadas[usuarios_del_genero_con_horas_sumadas["playtime_forever"] == usuarios_del_genero_con_horas_sumadas["playtime_forever"].max()]["user_id"].iloc[0] # Se filtra el dataframe por el usuario que más horas acumule en el genero dado, y se conserva sólo el user_id
+
+        diccionario_de_salida[f"Usuario con más horas para el género {genero}"] = jugador_del_genero_con_mas_horas # Se crea la primera clave:valor del diccionario, la clave es el genero ingresado y el valor es el nombre del jugador, sería genero:user
+
+        datos_usuario_top = usuarios_que_jugaron_juegos_con_el_genero_dado[(usuarios_que_jugaron_juegos_con_el_genero_dado["user_id"] == jugador_del_genero_con_mas_horas) & (usuarios_que_jugaron_juegos_con_el_genero_dado["playtime_forever"] != 0)]
+
+        jugador_top_del_genero_agrupado_por_nombre_y_año = datos_usuario_top.groupby(["año_salida"]).sum().reset_index()
+
+        horas_jugadas_por_año = []
+        for año in jugador_top_del_genero_agrupado_por_nombre_y_año["año_salida"]: # Bucle que recorre cada año del dataframe
+            # A partir de los años, queremos saber el valor correspondiente a playtime_forever
+            tiempo_de_juego_de_cada_año_en_minutos = jugador_top_del_genero_agrupado_por_nombre_y_año[jugador_top_del_genero_agrupado_por_nombre_y_año["año_salida"] == año]["playtime_forever"]
+            tiempo_de_juego_de_cada_año_en_horas = round(tiempo_de_juego_de_cada_año_en_minutos / 60, 2)
+            diccionario_temporal = {}
+            diccionario_temporal[int(año)] = tiempo_de_juego_de_cada_año_en_horas.iloc[0]
+            horas_jugadas_por_año.append(diccionario_temporal)
+            
+
+        diccionario_de_salida["Horas jugadas en los distintos años"] = horas_jugadas_por_año
+
+        return diccionario_de_salida
+    except Exception as e:
+        return e
+    
+@app.get("/user_data/{user_id}",response_model=dict)
+async def recommend_use(user_id : Optional[str] = "sandwiches1 / 76561197970982474"):
+    try:
+        resultado = user_data(user_id)
+        resultado = {k: (int(v) if isinstance(v, np.integer) else float(v) if isinstance(v, np.floating) else v) for k, v in resultado.items()}
+        return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print("Error inesperado:", str(e))
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+
+
+
 
 
 # Función que toma cómo argumento el ID de un juego y recomienda 5 similares
