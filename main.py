@@ -19,15 +19,14 @@ def developer(desarrollador: str):
     salida = {}
     Steam_games_important = pd.read_parquet("./Datasets/Steam_games_endpoint_1.parquet")
     # Imprimir información relevante antes del bucle
-    print("Desarrollador:", desarrollador)
-    print("Valores únicos de release_year:", Steam_games_important[Steam_games_important["developer"] == desarrollador]["release_year"].unique())
+
 
     if desarrollador not in Steam_games_important["developer"].unique():
         raise HTTPException(status_code=404, detail="Developer not found")
     
     for año in Steam_games_important[Steam_games_important["developer"] == desarrollador]["release_year"].unique():
         # Agregar más impresiones dentro del bucle si es necesario
-        print("Año actual:", año)
+        
 
         cant_items_anual = Steam_games_important[(Steam_games_important["release_year"] == año) & (Steam_games_important["developer"] == desarrollador)]["developer"].count()
         cant_items_gratuitos_anual = Steam_games_important[(Steam_games_important["release_year"] == año) & (Steam_games_important["developer"] == desarrollador) & (Steam_games_important["price"] == 0)]["developer"].count()
@@ -46,7 +45,7 @@ async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
     try:
         resultado = developer(desarrollador_local)
         # Imprimir el resultado para depuración
-        print("Resultado:", resultado)
+        
         return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="Archivo Parquet no encontrado, revisa si la ruta del archivo es correcta ;)")
@@ -55,20 +54,20 @@ async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
         raise HTTPException(status_code=500, detail=f"Error al leer el archivo Parquet: {str(e)}")
 
 # Segundo endpoint -------------------- 2
-def user_data(user_id):
+def informacion_usuario(user_id):
     try:
         user_id_str = str(user_id)
         # Cargamos los dataframes dentro de la función
         user_items = pd.read_parquet("./Datasets/user_items_endpoint_2.parquet")
         user_reviews = pd.read_parquet("./Datasets/user_reviews_endpoint_2.parquet")
         usuario_juego_precio = pd.read_parquet("./Datasets/steam_games_and_users_endpoint_2.parquet")
-        print("Archivos leídos correctamente")
+        
         diccionario_de_retorno = {} # Diccionario que va a almacenar las variables correspondientes a la salida de la función
 
         if user_items[user_items["user_id"] == user_id_str].empty: # En caso de que no haya usuarios con el ID ingresado, se muestra lo siguiente:
             return {"Detail":"No se encontraron datos para el usuario con ID: " + user_id_str}
         else: # En caso de que haya usuarios con el ID ingresado, se muestra lo siguiente
-            print("Condicional pasado exitosamente")
+            
             # Se cuenta la cantidad de juegos que tiene el usuario
             cantidad_juegos = user_items[user_items["user_id"] == user_id_str]["user_id"].count()
 
@@ -76,16 +75,12 @@ def user_data(user_id):
             # Se cuenta la cantidad de recomendaciones. En la columna recommend aparece "True" o "False", tuve en cuenta sólo las que aparece "True" del usuario ingresado.
             cantidad_de_recomendaciones = user_reviews[(user_reviews["user_id"] == user_id_str) & (user_reviews["recommend"] == True)]["recommend"].count()
 
-            print(f"Cantidad de recomendaciones: {cantidad_de_recomendaciones}, Tipo: {type(cantidad_de_recomendaciones)}")
             # Se cuenta la cantidad de dinero gastado por el usuario, haciendo una suma de la columna "price" de los juegos que tiene el usuario. 
             cantidad_dinero_gastado = usuario_juego_precio[usuario_juego_precio["user_id"] == user_id_str]["price"].sum()
 
-            print(f"Cantidad de dinero gastado: {cantidad_dinero_gastado}, Tipo: {type(cantidad_dinero_gastado)}")
             # A partir del ID ingresado, del dinero gastado, del porcentaje de recomendación, y de la cantidad de juegos, se almacenan en el diccionario previamente creado con las claves correspondientes.
             diccionario_de_retorno["Usuario"] = user_id_str
-            print("Primera parte del diccionario hecha")
-            diccionario_de_retorno["Dinero gastado"] = f"{round(cantidad_dinero_gastado, 2)} USD"
-            print("Segunda parte del diccionario hecha")
+            
             # Si el usuario no hizo recomendaciones, para no tener errores de división por 0, defino que el porcentaje de recomendación es de 0%
             if cantidad_de_recomendaciones == 0:
                 porcentaje_recomendacion = 0
@@ -95,10 +90,8 @@ def user_data(user_id):
                 porcentaje_recomendacion = round((cantidad_de_recomendaciones * 100) / cantidad_juegos, 2)
                 diccionario_de_retorno["Porcentaje de recomendación"] = f"{porcentaje_recomendacion}%"
 
-            print(f"Porcentaje de recomendación: {diccionario_de_retorno['Porcentaje de recomendación']}, Tipo: {type(porcentaje_recomendacion)}")
-            print("Tercera parte del diccionario hecha")
             diccionario_de_retorno["Cantidad de juegos"] = cantidad_juegos
-            print("Cuarta parte del diccionario hecha")
+
             
             # Se devuelve el diccionario creado
             return diccionario_de_retorno
@@ -110,10 +103,10 @@ def user_data(user_id):
         print(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error al procesar la solicitud: {str(e)}")
     
-@app.get("/user_data/{user_id}",response_model=dict)
-async def recommend_use(user_id : Optional[str] = "sandwiches1 / 76561197970982474"):
+@app.get("/informacion_usuario/{user_id}",response_model=dict)
+async def informacion_usuario_use(user_id : Optional[str] = "sandwiches1 / 76561197970982474"):
     try:
-        resultado = user_data(user_id)
+        resultado = informacion_usuario(user_id)
         resultado = {k: (int(v) if isinstance(v, np.integer) else float(v) if isinstance(v, np.floating) else v) for k, v in resultado.items()}
         return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
     except HTTPException as e:
@@ -125,12 +118,17 @@ async def recommend_use(user_id : Optional[str] = "sandwiches1 / 765611979709824
 # Tercer endpoint -------------------- 3
 def usuario_por_genero(genero): # Se ingresa el genero de vídeojuegos
     try:
+        genero_str = str(genero)
+        juegos_filtrables_por_genero = pd.read_parquet("./Datasets/steam_games_endpoint_3.parquet") # Se lee el archivo steam_games_endpoint_3 que ya está optimizado para la función, pudiendo filtrar los juegos fácilmente mediante el género, he de ahí el nombre de la variable
+
+        user_items = pd.read_parquet("./Datasets/user_items_endpoint_3.parquet")
 
         diccionario_de_salida = {} # Se crea el diccionario que posteriormente va a devolver la función cómo salida
 
-        steam_games_filtrable_por_genero = steam_games.explode("genres") # Se crea un nuevo dataframe a partir del original de vídeojuegos con el método .explode, lo cuál facilita que sea filtrado posteriormente por el genero ingresado.
-
-        juegos_con_el_genero_dado = steam_games_filtrable_por_genero[steam_games_filtrable_por_genero["genres"] == genero] # Se filtra el dataframe previamente creado por el genero ingresado en la función
+        juegos_con_el_genero_dado = juegos_filtrables_por_genero[juegos_filtrables_por_genero["genres"] == genero_str] 
+        
+        
+        # Se filtra el dataframe previamente creado por el genero ingresado en la función
 
         juegos_con_el_genero_dado = juegos_con_el_genero_dado.drop(columns=["genres","release_date","descripción_temporal"]) # Se eliminan las columnas irrelevantes para optimizar el rendimiento de la función. 
 
@@ -166,11 +164,10 @@ def usuario_por_genero(genero): # Se ingresa el genero de vídeojuegos
     except Exception as e:
         return e
     
-@app.get("/user_data/{user_id}",response_model=dict)
-async def recommend_use(user_id : Optional[str] = "sandwiches1 / 76561197970982474"):
+@app.get("/usuario_por_genero/{genero}",response_model=dict)
+async def usuario_por_genero_use(genero : str = "Action / Casual / Indie / Simulation / Strategy / Free to Play / RPG"):
     try:
-        resultado = user_data(user_id)
-        resultado = {k: (int(v) if isinstance(v, np.integer) else float(v) if isinstance(v, np.floating) else v) for k, v in resultado.items()}
+        resultado = usuario_por_genero(genero)
         return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
     except HTTPException as e:
         raise e
@@ -178,11 +175,11 @@ async def recommend_use(user_id : Optional[str] = "sandwiches1 / 765611979709824
         print("Error inesperado:", str(e))
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
+# Cuarto endpoint -------------------- 4
 
 
 
-
-# Función que toma cómo argumento el ID de un juego y recomienda 5 similares
+# Sistema de recomendación item-item
 def recomendacion_juego(id_juego):
 
     juegos_steam = pd.read_parquet("./Datasets/id_name_categorical_of_games.parquet")
@@ -205,9 +202,8 @@ def recomendacion_juego(id_juego):
 
     return {"Juegos recomendados":juegos_recomendados}
 
-
 @app.get("/recomendacion_juego/{id_juego}",response_model=dict)
-async def recommend_use(id_local : str = Query(default="430240", description="Nombre del juego: Duplexer")):
+async def recomendacion_juego_use(id_local : str = Query(default="430240", description="Nombre del juego: Duplexer")):
     try:
         resultado = recomendacion_juego(id_local)
         # Imprimir el resultado para depuración
