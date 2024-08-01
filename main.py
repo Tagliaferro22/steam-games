@@ -116,60 +116,41 @@ async def informacion_usuario_use(user_id : Optional[str] = "sandwiches1 / 76561
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
     
 # Tercer endpoint -------------------- 3
-def usuario_por_genero(genero: str):
+def usuario_por_genero(genero: str): # Se ingresa a la función el genero que se quiere determinar el usuario top
     try:
-        genero_str = str(genero)
-        juegos_filtrables_por_genero = pd.read_parquet("./Datasets/steam_games_endpoint_3.parquet")
-        print(f"Archivo steam_games_endpoint_3.parquet leído correctamente. Número de filas: {len(juegos_filtrables_por_genero)}")
+        usuarios_juegos_y_generos = pd.read_parquet("./Datasets/endpoint_3.parquet")
 
-        user_items = pd.read_parquet("./Datasets/user_items_endpoint_3.parquet")
-        print(f"Archivo user_items_endpoint_3.parquet leído correctamente. Número de filas: {len(user_items)}")
+        genero_str = str(genero) # Se crea una variable local que va a servir para filtrar el dataframe
+        
+        diccionario_de_salida = {} # Se crea una variable local que va a servir cómo salida de la función
 
-        diccionario_de_salida = {}
-
-        if genero_str not in juegos_filtrables_por_genero["genres"].unique():
+        if genero_str not in usuarios_juegos_y_generos["genres"].unique(): # Condicional para chequear que el genero ingresado a la función existe en el dataset
             raise HTTPException(status_code=404, detail=f"Género {genero_str} no encontrado")
 
-        juegos_con_el_genero_dado = juegos_filtrables_por_genero[juegos_filtrables_por_genero["genres"] == genero_str]
-        print(f"Número de juegos con el género {genero_str}: {len(juegos_con_el_genero_dado)}")
+        # Si existe, se filtra el dataset por el genero ingresado a la función
+        usuarios_que_jugaron_juegos_con_el_genero_dado = usuarios_juegos_y_generos.loc[usuarios_juegos_y_generos["genres"] == genero_str]
 
-        juegos_con_el_genero_dado = juegos_con_el_genero_dado.drop(columns=["genres", "release_date", "descripción_temporal"])
-        juegos_con_el_genero_dado = juegos_con_el_genero_dado.sort_values("año_salida")
-        print("Juegos filtrados y ordenados por año de salida")
+        # Se suman las horas de los distintos usuarios en el genero ingresado en la función
+        usuarios_del_genero_con_horas_sumadas = usuarios_que_jugaron_juegos_con_el_genero_dado.groupby("user_id")["playtime_forever"].sum()
 
-        usuarios_que_jugaron_juegos_con_el_genero_dado = pd.merge(juegos_con_el_genero_dado, user_items, on='item_id', how='inner')
-        print(f"Número de usuarios que jugaron juegos del género {genero_str}: {len(usuarios_que_jugaron_juegos_con_el_genero_dado)}")
+        # Se determina el nombre del usuario que acumula más horas jugadas en el genero ingresado
+        jugador_con_mas_horas = usuarios_del_genero_con_horas_sumadas.idxmax()
 
-        usuarios_que_jugaron_juegos_con_el_genero_dado.drop(columns=["item_id", "item_name_y"], inplace=True)
+        # Se agrega al diccionario de salida el nombre del usuario que acumula más horas en el genero ingresado
+        diccionario_de_salida[f"Usuario con más horas para el género {genero}"] = jugador_con_mas_horas
 
-        usuarios_del_genero_con_horas_sumadas = usuarios_que_jugaron_juegos_con_el_genero_dado.groupby(["user_id"]).sum().reset_index()
+        # Se suma la cantidad de horas del usuario top del genero
+        cantidad_de_horas_acumuladas_en_distintos_años = usuarios_que_jugaron_juegos_con_el_genero_dado[(usuarios_que_jugaron_juegos_con_el_genero_dado["user_id"] == jugador_con_mas_horas) & (usuarios_que_jugaron_juegos_con_el_genero_dado["playtime_forever"] != 0)].groupby("año_salida")["playtime_forever"].sum()
 
-        jugador_del_genero_con_mas_horas = usuarios_del_genero_con_horas_sumadas.loc[
-            usuarios_del_genero_con_horas_sumadas["playtime_forever"].idxmax(), "user_id"]
-        print(f"Usuario con más horas en el género {genero_str}: {jugador_del_genero_con_mas_horas}")
-
-
-        diccionario_de_salida[f"Usuario con más horas para el género {genero}"] = jugador_del_genero_con_mas_horas
-
-        datos_usuario_top = usuarios_que_jugaron_juegos_con_el_genero_dado[
-            (usuarios_que_jugaron_juegos_con_el_genero_dado["user_id"] == jugador_del_genero_con_mas_horas) &
-            (usuarios_que_jugaron_juegos_con_el_genero_dado["playtime_forever"] != 0)
-        ]
-        print("Datos del usuario top obtenidos")
-
-        jugador_top_del_genero_agrupado_por_nombre_y_año = datos_usuario_top.groupby(["año_salida"]).sum().reset_index()
-
+        # Se crea una lista de diccionarios que tiene este formato: [{Año:Horas jugadas}, {Año:Horas jugadas}, ...]
         horas_jugadas_por_año = [
-            {int(año): round(tiempo_de_juego_de_cada_año_en_minutos / 60, 2)}
-            for año, tiempo_de_juego_de_cada_año_en_minutos in zip(
-                jugador_top_del_genero_agrupado_por_nombre_y_año["año_salida"],
-                jugador_top_del_genero_agrupado_por_nombre_y_año["playtime_forever"]
-            )
+            {int(año): round(horas / 60, 2)}
+            for año, horas in cantidad_de_horas_acumuladas_en_distintos_años.items()
+            
         ]
 
+        # Se agrega al diccionario de salida la lista creada anteriormente
         diccionario_de_salida["Horas jugadas en los distintos años"] = horas_jugadas_por_año
-
-        print(f"Función usuario_por_genero completada exitosamente para el género: {genero}")
 
         return diccionario_de_salida
     except FileNotFoundError as e:
