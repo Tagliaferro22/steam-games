@@ -118,18 +118,13 @@ async def informacion_usuario_use(user_id : Optional[str] = "sandwiches1 / 76561
 # Tercer endpoint -------------------- 3
 def usuario_por_genero(genero: str): # Se ingresa a la función el genero que se quiere determinar el usuario top
     try:
-        usuarios_juegos_y_generos = pd.read_parquet("./Datasets/endpoint_3.parquet")
-
-        genero_str = str(genero) # Se crea una variable local que va a servir para filtrar el dataframe
+        # Ruta al archivo
+        ruta_especifica = f"./Datasets/endpoint_3/genero_{genero}.parquet"
+        try:
+            usuarios_que_jugaron_juegos_con_el_genero_dado = pd.read_parquet(ruta_especifica)
+        except FileNotFoundError:
+            raise HTTPException(status_code=404, detail=f"Género {genero} no encontrado")
         
-        diccionario_de_salida = {} # Se crea una variable local que va a servir cómo salida de la función
-
-        if genero_str not in usuarios_juegos_y_generos["genres"].unique(): # Condicional para chequear que el genero ingresado a la función existe en el dataset
-            raise HTTPException(status_code=404, detail=f"Género {genero_str} no encontrado")
-
-        # Si existe, se filtra el dataset por el genero ingresado a la función
-        usuarios_que_jugaron_juegos_con_el_genero_dado = usuarios_juegos_y_generos.loc[usuarios_juegos_y_generos["genres"] == genero_str]
-
         # Se suman las horas de los distintos usuarios en el genero ingresado en la función
         usuarios_del_genero_con_horas_sumadas = usuarios_que_jugaron_juegos_con_el_genero_dado.groupby("user_id")["playtime_forever"].sum()
 
@@ -137,7 +132,9 @@ def usuario_por_genero(genero: str): # Se ingresa a la función el genero que se
         jugador_con_mas_horas = usuarios_del_genero_con_horas_sumadas.idxmax()
 
         # Se agrega al diccionario de salida el nombre del usuario que acumula más horas en el genero ingresado
-        diccionario_de_salida[f"Usuario con más horas para el género {genero}"] = jugador_con_mas_horas
+        diccionario_de_salida = {
+            f"Usuario con más horas para el género {genero}": jugador_con_mas_horas
+        }
 
         # Se suma la cantidad de horas del usuario top del genero
         cantidad_de_horas_acumuladas_en_distintos_años = usuarios_que_jugaron_juegos_con_el_genero_dado[(usuarios_que_jugaron_juegos_con_el_genero_dado["user_id"] == jugador_con_mas_horas) & (usuarios_que_jugaron_juegos_con_el_genero_dado["playtime_forever"] != 0)].groupby("año_salida")["playtime_forever"].sum()
