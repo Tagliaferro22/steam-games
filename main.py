@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
+
 # http://127.0.0.1:8000
 app = FastAPI()
 
@@ -118,18 +119,23 @@ async def informacion_usuario_use(user_id : Optional[str] = "sandwiches1 / 76561
 # Tercer endpoint -------------------- 3
 def usuario_por_genero(genero: str): # Se ingresa a la función el genero que se quiere determinar el usuario top
     try:
+
         # Ruta al archivo
         ruta_especifica = f"./Datasets/endpoint_3/genero_{genero}.parquet"
+        print(f"Cargando data desde: {ruta_especifica}")  
         try:
             usuarios_que_jugaron_juegos_con_el_genero_dado = pd.read_parquet(ruta_especifica)
         except FileNotFoundError:
             raise HTTPException(status_code=404, detail=f"Género {genero} no encontrado")
         
+        print(1)
         # Se suman las horas de los distintos usuarios en el genero ingresado en la función
         usuarios_del_genero_con_horas_sumadas = usuarios_que_jugaron_juegos_con_el_genero_dado.groupby("user_id")["playtime_forever"].sum()
+        print(2)
 
         # Se determina el nombre del usuario que acumula más horas jugadas en el genero ingresado
         jugador_con_mas_horas = usuarios_del_genero_con_horas_sumadas.idxmax()
+        print(3)
 
         # Se agrega al diccionario de salida el nombre del usuario que acumula más horas en el genero ingresado
         diccionario_de_salida = {
@@ -137,7 +143,8 @@ def usuario_por_genero(genero: str): # Se ingresa a la función el genero que se
         }
 
         # Se suma la cantidad de horas del usuario top del genero
-        cantidad_de_horas_acumuladas_en_distintos_años = usuarios_que_jugaron_juegos_con_el_genero_dado[(usuarios_que_jugaron_juegos_con_el_genero_dado["user_id"] == jugador_con_mas_horas) & (usuarios_que_jugaron_juegos_con_el_genero_dado["playtime_forever"] != 0)].groupby("año_salida")["playtime_forever"].sum()
+        cantidad_de_horas_acumuladas_en_distintos_años = usuarios_que_jugaron_juegos_con_el_genero_dado[usuarios_que_jugaron_juegos_con_el_genero_dado["user_id"] == jugador_con_mas_horas].groupby("año_salida")["playtime_forever"].sum()
+        print(4)
 
         # Se crea una lista de diccionarios que tiene este formato: [{Año:Horas jugadas}, {Año:Horas jugadas}, ...]
         horas_jugadas_por_año = [
@@ -145,10 +152,12 @@ def usuario_por_genero(genero: str): # Se ingresa a la función el genero que se
             for año, horas in cantidad_de_horas_acumuladas_en_distintos_años.items()
             
         ]
+        print(5)
 
         # Se agrega al diccionario de salida la lista creada anteriormente
         diccionario_de_salida["Horas jugadas en los distintos años"] = horas_jugadas_por_año
 
+        print(6)
         return diccionario_de_salida
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=f"Archivo Parquet no encontrado: {str(e)}")
