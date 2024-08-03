@@ -62,6 +62,7 @@ def informacion_usuario(user_id):
         user_items = pd.read_parquet("./Datasets/user_items_endpoint_2.parquet")
         user_reviews = pd.read_parquet("./Datasets/user_reviews_endpoint_2.parquet")
         usuario_juego_precio = pd.read_parquet("./Datasets/steam_games_and_users_endpoint_2.parquet")
+        print("Archivos leídos correctamente")
         
         diccionario_de_retorno = {} # Diccionario que va a almacenar las variables correspondientes a la salida de la función
 
@@ -70,17 +71,25 @@ def informacion_usuario(user_id):
         else: # En caso de que haya usuarios con el ID ingresado, se muestra lo siguiente
             
             # Se cuenta la cantidad de juegos que tiene el usuario
+            print("Condicional pasado correctamente")
             cantidad_juegos = user_items[user_items["user_id"] == user_id_str]["user_id"].count()
 
             print(f"Cantidad de juegos: {cantidad_juegos}, Tipo: {type(cantidad_juegos)}")
             # Se cuenta la cantidad de recomendaciones. En la columna recommend aparece "True" o "False", tuve en cuenta sólo las que aparece "True" del usuario ingresado.
             cantidad_de_recomendaciones = user_reviews[(user_reviews["user_id"] == user_id_str) & (user_reviews["recommend"] == True)]["recommend"].count()
+            print("Cantidad de recomendaciones obtenidas")
 
             # Se cuenta la cantidad de dinero gastado por el usuario, haciendo una suma de la columna "price" de los juegos que tiene el usuario. 
             cantidad_dinero_gastado = usuario_juego_precio[usuario_juego_precio["user_id"] == user_id_str]["price"].sum()
+            cantidad_dinero_gastado = round(cantidad_dinero_gastado, 2)
+            print("Cantidad de dinero gastado obtenido")
 
             # A partir del ID ingresado, del dinero gastado, del porcentaje de recomendación, y de la cantidad de juegos, se almacenan en el diccionario previamente creado con las claves correspondientes.
             diccionario_de_retorno["Usuario"] = user_id_str
+            print("Usuario agregado al diccionario de salida")
+
+            diccionario_de_retorno["Dinero gastado"] = f"{cantidad_dinero_gastado} USD"
+            print("Dinero gastado agregado al diccionario de salida")
             
             # Si el usuario no hizo recomendaciones, para no tener errores de división por 0, defino que el porcentaje de recomendación es de 0%
             if cantidad_de_recomendaciones == 0:
@@ -91,8 +100,10 @@ def informacion_usuario(user_id):
                 porcentaje_recomendacion = round((cantidad_de_recomendaciones * 100) / cantidad_juegos, 2)
                 diccionario_de_retorno["Porcentaje de recomendación"] = f"{porcentaje_recomendacion}%"
 
-            diccionario_de_retorno["Cantidad de juegos"] = cantidad_juegos
+            print("Porcentaje de recomendación agregado al diccionario de salida")
 
+            diccionario_de_retorno["Cantidad de juegos"] = cantidad_juegos
+            print("Cantidad de juegos agregados al diccionario de salida")
             
             # Se devuelve el diccionario creado
             return diccionario_de_retorno
