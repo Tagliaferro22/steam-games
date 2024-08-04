@@ -55,13 +55,17 @@ async def developer_use(desarrollador_local : str = Query(default="ebi-hime")):
         raise HTTPException(status_code=500, detail=f"Error al leer el archivo Parquet: {str(e)}")
 
 # Segundo endpoint -------------------- 2
+# El endpoint está así en el main:
 def informacion_usuario(user_id):
     try:
         user_id_str = str(user_id)
         # Cargamos los dataframes dentro de la función
-        user_items = pd.read_parquet("./Datasets/user_items_endpoint_2.parquet")
-        user_reviews = pd.read_parquet("./Datasets/user_reviews_endpoint_2.parquet")
-        usuario_juego_precio = pd.read_parquet("./Datasets/steam_games_and_users_endpoint_2.parquet")
+        user_items = pd.read_parquet("./Datasets/endpoint_2/users_items.parquet")
+
+        user_reviews = pd.read_parquet("./Datasets/endpoint_2/user_reviews_endpoint_2.parquet")
+
+        usuario_juego_precio = pd.read_parquet("./Datasets/endpoint_2/usuarios_y_dinero_gastado.parquet")
+
         print("Archivos leídos correctamente")
         
         diccionario_de_retorno = {} # Diccionario que va a almacenar las variables correspondientes a la salida de la función
@@ -72,15 +76,17 @@ def informacion_usuario(user_id):
             
             # Se cuenta la cantidad de juegos que tiene el usuario
             print("Condicional pasado correctamente")
-            cantidad_juegos = user_items[user_items["user_id"] == user_id_str]["user_id"].count()
+            cantidad_juegos = user_items[user_items["user_id"] == user_id_str]["items_count"].iloc[0]
 
             print(f"Cantidad de juegos: {cantidad_juegos}, Tipo: {type(cantidad_juegos)}")
+
             # Se cuenta la cantidad de recomendaciones. En la columna recommend aparece "True" o "False", tuve en cuenta sólo las que aparece "True" del usuario ingresado.
             cantidad_de_recomendaciones = user_reviews[(user_reviews["user_id"] == user_id_str) & (user_reviews["recommend"] == True)]["recommend"].count()
             print("Cantidad de recomendaciones obtenidas")
-
+            
             # Se cuenta la cantidad de dinero gastado por el usuario, haciendo una suma de la columna "price" de los juegos que tiene el usuario. 
-            cantidad_dinero_gastado = usuario_juego_precio[usuario_juego_precio["user_id"] == user_id_str]["price"].sum()
+            cantidad_dinero_gastado = usuario_juego_precio[usuario_juego_precio["user_id"] == user_id_str]["dinero_gastado"].iloc[0]
+
             cantidad_dinero_gastado = round(cantidad_dinero_gastado, 2)
             print("Cantidad de dinero gastado obtenido")
 
