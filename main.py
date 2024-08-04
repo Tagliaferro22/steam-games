@@ -9,7 +9,11 @@ import numpy as np
 
 
 # http://127.0.0.1:8000
-app = FastAPI()
+app = FastAPI(
+    title = 'Machine Learning Operations (MLOps)',
+    description='API para realizar consultas',
+    version='Mateo Tagliaferro (2024)'
+)
 
 @app.get("/")
 def index():
