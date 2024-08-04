@@ -200,16 +200,16 @@ async def usuario_por_genero_use(genero: str):
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
 # Cuarto endpoint -------------------- 4
-def mejor_desarrollador_del_año(año):
+def mejor_desarrollador_del_anio(anio):
     """
     En este noveno prototipo, voy a ingresar un año a la función, y me va a devolver una lista de diccionarios con los top 3 desarrolladores
     """
     try:
-        desarrolladores_y_reseñas = pd.read_parquet("../Datasets/endpoint_4/desarrolladores_y_reseñas.parquet")
+        desarrolladores_y_reseñas = pd.read_parquet("./Datasets/endpoint_4/desarrolladores_y_reseñas.parquet")
 
         diccionario_salida = {}
 
-        año_int = int(año) # Chequeo si lo ingresado a la función es un número transformable a entero, en caso de que lo sea, lo almaceno en la variable año_int
+        año_int = int(anio) # Chequeo si lo ingresado a la función es un número transformable a entero, en caso de que lo sea, lo almaceno en la variable año_int
 
         reseñas_del_año_dado = desarrolladores_y_reseñas[desarrolladores_y_reseñas["año"] == año_int] # Filtro el dataframe de reseñas con el año dado y con recommend == True
 
@@ -224,10 +224,10 @@ def mejor_desarrollador_del_año(año):
     except Exception as e:
         return e
 
-@app.get("/mejor_desarrollador_del_año/{año}", response_model=dict)
-async def mejor_desarrollador_del_año_use(año: str):
+@app.get("/mejor_desarrollador_del_anio/{anio}", response_model=dict)
+async def mejor_desarrollador_del_anio_use(anio: int):
     try:
-        resultado = mejor_desarrollador_del_año(año)
+        resultado = mejor_desarrollador_del_anio(anio)
         return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
     except HTTPException as e:
         raise e
