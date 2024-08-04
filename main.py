@@ -200,7 +200,40 @@ async def usuario_por_genero_use(genero: str):
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
 # Cuarto endpoint -------------------- 4
+def mejor_desarrollador_del_año(año):
+    """
+    En este noveno prototipo, voy a ingresar un año a la función, y me va a devolver una lista de diccionarios con los top 3 desarrolladores
+    """
+    try:
+        desarrolladores_y_reseñas = pd.read_parquet("../Datasets/endpoint_4/desarrolladores_y_reseñas.parquet")
 
+        diccionario_salida = {}
+
+        año_int = int(año) # Chequeo si lo ingresado a la función es un número transformable a entero, en caso de que lo sea, lo almaceno en la variable año_int
+
+        reseñas_del_año_dado = desarrolladores_y_reseñas[desarrolladores_y_reseñas["año"] == año_int] # Filtro el dataframe de reseñas con el año dado y con recommend == True
+
+        desarrolladores_top = reseñas_del_año_dado["developer"].value_counts().nlargest(3) # Cuento las reseñas positivas de cada desarrollador y se guardan unicamente los 3 desarrolladores con más reseñas
+
+        diccionario_interno = {f"Puesto nº{puesto}": {desarrollador: f"{recomendaciones} recomendaciones"} 
+                               for puesto, (desarrollador, recomendaciones) in enumerate(desarrolladores_top.items(), 1)}
+
+        diccionario_salida[año_int] = diccionario_interno # Finalmente el diccionario de salida tiene cómo clave el año ingresado y cómo valor el diccionario interno previamente creado
+
+        return diccionario_salida
+    except Exception as e:
+        return e
+
+@app.get("/mejor_desarrollador_del_año/{año}", response_model=dict)
+async def mejor_desarrollador_del_año_use(año: str):
+    try:
+        resultado = mejor_desarrollador_del_año(año)
+        return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print(f"Error inesperado: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
 
 # Sistema de recomendación item-item
