@@ -236,6 +236,58 @@ async def mejor_desarrollador_del_anio_use(anio: int):
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
 
+# Cinco endpoint -------------------- 5
+def analisis_resenias_desarrollador(desarrollador):
+    """
+    En este sexto prototipo del endpoint, se va a ingresar a la función un nombre de un desarrollador, y va a devolver mediante un diccionario la cantidad de juegos de ese desarrollador, las reseñas de todos los juegos de ese desarrollador, y  también las cualidades de esas reseñas, osea cuantas corresponden a negativas, neutras y positivas.
+    """
+    try:
+        diccionario_salida = {}
+        diccionario_salida_interno = {}
+
+        juegos = pd.read_parquet("./Datasets/endpoint_5/juegos.parquet")
+        reseñas = pd.read_parquet("./Datasets/endpoint_5/resenias.parquet")
+
+        juegos_filtrados_por_desarrollador = juegos[juegos["developer"] == desarrollador]
+
+        diccionario_salida_interno["Cantidad de juegos"] = len(juegos_filtrados_por_desarrollador)
+
+        id_juegos_desarrollador = juegos_filtrados_por_desarrollador["item_id"].values
+
+        reseñas_juegos_desarrolladora = reseñas[reseñas["item_id"].isin(id_juegos_desarrollador)]
+
+        diccionario_salida_interno["Cantidad de reseñas"] = len(reseñas_juegos_desarrolladora)
+
+        cant_reseñas_negativas = len(reseñas_juegos_desarrolladora[reseñas_juegos_desarrolladora["puntaje"] == 0])
+
+        cant_reseñas_neutras = len(reseñas_juegos_desarrolladora[reseñas_juegos_desarrolladora["puntaje"] == 1])
+
+        cant_reseñas_positivas = len(reseñas_juegos_desarrolladora[reseñas_juegos_desarrolladora["puntaje"] == 2])
+
+        lista_reseñas = [f"Negativas = {cant_reseñas_negativas}",       f"Neutras = {cant_reseñas_neutras}", 
+            f"Positivas = {cant_reseñas_positivas}"]
+        
+
+        diccionario_salida_interno["Cualidad de las reseñas"] = lista_reseñas
+
+        diccionario_salida[desarrollador] = diccionario_salida_interno
+
+        return diccionario_salida
+    except Exception as e:
+        return e
+
+@app.get("/analisis_resenias_desarrollador/{desarrollador}", response_model=dict)
+async def analisis_resenias_desarrollador_use(desarrollador : str):
+    try:
+        resultado = analisis_resenias_desarrollador(desarrollador)
+        return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print(f"Error inesperado: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+
+
 # Sistema de recomendación item-item
 def recomendacion_juego(id_juego):
 
