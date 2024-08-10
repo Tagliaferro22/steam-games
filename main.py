@@ -23,7 +23,7 @@ def index():
 # Primer endpoint -------------------- 1
 def developer(desarrollador: str):
     salida = {}
-    Steam_games_important = pd.read_parquet("./Datasets/Steam_games_endpoint_1.parquet")
+    Steam_games_important = pd.read_parquet("./Datasets/endpoint_1/Steam_games_endpoint_1.parquet")
     # Imprimir información relevante antes del bucle
 
 
@@ -237,7 +237,7 @@ async def mejor_desarrollador_del_anio_use(anio: int):
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
 
-# Cinco endpoint -------------------- 5
+# Quinto endpoint -------------------- 5
 def analisis_resenias_desarrollador(desarrollador):
     """
     En este sexto prototipo del endpoint, se va a ingresar a la función un nombre de un desarrollador, y va a devolver mediante un diccionario la cantidad de juegos de ese desarrollador, las reseñas de todos los juegos de ese desarrollador, y  también las cualidades de esas reseñas, osea cuantas corresponden a negativas, neutras y positivas.
