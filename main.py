@@ -6,6 +6,7 @@ from typing import Optional
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import logging
 
 
 # http://127.0.0.1:8000
@@ -315,6 +316,71 @@ def recomendacion_juego(id_juego):
 async def recomendacion_juego_use(id_local : str = Query(default="430240", description="Nombre del juego: Duplexer")):
     try:
         resultado = recomendacion_juego(id_local)
+        # Imprimir el resultado para depuración
+        print("Resultado:", resultado)
+        return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Archivo Parquet no encontrado, revisa si la ruta del archivo es correcta ;)")
+    except Exception as e:
+        print("Error:", str(e))
+        raise HTTPException(status_code=500, detail=f"Error al leer el archivo Parquet: {str(e)}")
+    
+# Sistema de recomendación user-item
+def recomendacion_usuario(usuario_elegido):
+  try:
+    logger = logging.getLogger("my_logger")
+
+    print("Comenzando con la función")
+    # Lectura de los archivos necesarios para trabajar
+    similitud_de_usuarios_coseno = pd.read_parquet("./Datasets/recomendacion/similitud_entre_usuarios.parquet")
+    matrix_norm = pd.read_parquet("./Datasets/recomendacion/matriz_normalizada.parquet")
+    logger.info(f"Tamaño 1: {similitud_de_usuarios_coseno.shape}")
+    logger.info(f"Tamaño 2: {matrix_norm.shape}")
+    if similitud_de_usuarios_coseno.empty or matrix_norm.empty:
+    # Manejar el caso de DataFrame vacío
+        raise ValueError("El archivo Parquet está vacío.")
+    print("Archivos leídos correctamente")
+
+    if usuario_elegido not in matrix_norm.index:
+            raise HTTPException(status_code=404, detail="Usuario no encontrado, intente con otro")
+    
+    # Busco los usuarios similares y los ordeno desde el más similar al menos similar. El 0.3 hace referencia a que el porcentaje minimo de similitud es un 30% y el 9 hace referencia al top 9 de usuarios más similares.
+    usuarios_similares = similitud_de_usuarios_coseno[similitud_de_usuarios_coseno[usuario_elegido] > 0.3][usuario_elegido].sort_values(ascending=False)[:9] 
+
+    juegos_jugados_por_usuario_elegido = matrix_norm[matrix_norm.index == usuario_elegido].dropna(axis=1,how="all").columns # Creamos un nuevo array que contenga los nombres de los juegos que el usuario elegio ha jugado
+
+    # Juegos que usuarios similares han jugado. Eliminamos los juegos que ninguno de los usuarios similares haya jugado
+    juegos_de_usuarios_similares = matrix_norm[matrix_norm.index.isin(usuarios_similares.index)].dropna(axis=1, how='all')
+
+    # Eliminamos los juegos jugados por el usuario elegido
+    juegos_de_usuarios_similares.drop(juegos_jugados_por_usuario_elegido,axis=1, inplace=True, errors='ignore')
+
+    # Multiplicamos las puntuaciones de los juegos por las similitudes de los usuarios
+    puntajes_ponderados = juegos_de_usuarios_similares.mul(usuarios_similares, axis=0)
+
+        # Sumamos los puntajes ponderados por juego, ignorando NaN
+    suma_puntajes = puntajes_ponderados.sum(axis=0, skipna=True)
+
+        # Contamos la cantidad de usuarios que han puntuado cada juego
+    conteo_puntajes = juegos_de_usuarios_similares.notna().mul(usuarios_similares, axis=0).sum(axis=0)
+
+        # Calculamos el puntaje promedio de cada juego
+    puntaje_promedio = suma_puntajes / conteo_puntajes
+
+        # Convertimos el resultado en un DataFrame y lo ordenamos
+    item_score = puntaje_promedio.reset_index().rename(columns={'index': 'item_name', 0: 'item_score'}).sort_values(by='item_score', ascending=False)
+
+        # Seleccionamos los 5 mejores juegos
+    lista_salida = item_score.head(5)['item_name'].tolist()
+
+    return lista_salida
+  except Exception as e:
+    return e
+
+@app.get("/recomendacion_usuario/{usuario_elegido}",response_model=dict)
+async def recomendacion_usuario_use(id_local : str = Query(default="09879655452567", description="Otras opciones: Duplexer")):
+    try:
+        resultado = recomendacion_usuario(id_local)
         # Imprimir el resultado para depuración
         print("Resultado:", resultado)
         return JSONResponse(content=jsonable_encoder(resultado), media_type="application/json")
