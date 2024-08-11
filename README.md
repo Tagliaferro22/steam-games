@@ -10,11 +10,13 @@
 
 ---
 
-### <center> Introducción / descripción del proyecto </center>
+# <center> Introducción / descripción del proyecto </center>
 
 Para este proyecto educativo me pidieron que desarrollé un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
 
 Trabajando cómo científico de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#sistema-de-recomendación)
+
+## <center> Conjuntos de datos </center>
 
 Tengo 3 conjuntos de datos que corresponden a lo que es la base de datos de Steam.
 
@@ -49,16 +51,38 @@ Echando un vistazo a la tabla original nos encontramos con las siguientes column
 
 Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que objetivos cumplí en este proyecto.
 
+---
+
 ### <center> Objetivos y alcances del proyecto </center>
 
 ✅ Transformaciones: para el desarrollo de los [endpoints](#endpoints) y de los [sistemas de recomendación](#sistema-de-recomendación), me encontré con varios inconvenientes, los cuáles explico con más detalle en la parte del [ETL](#etl).
 
-✅ 
-✅
-✅
+✅ Análisis exploratorio de datos (EDA): Luego de haber podido leer los datos, me encargué de realizar un análisis exploratorio de los datos, el cuál explico con más detalle enla parte del [EDA](#eda).
 
+✅ Análisis de sentimientos: A partir de las reseñas hechas por los usuarios hacia determinados juegos, determiné si se trataba de una reseña negativa, neutra o positiva.
+
+✅ Desarrollo óptimo y funcional de una API mediante el framework de FastAPI y Render. 
+
+✅ Desarrollo e implementación de ciertos [endpoints / funciones](#endpoints) para utilizar dentro de la API.
+
+✅ Desarrollo e implementación de modelos de Machine Learning orientados a un sistema de recomendación de videojuegos.
+
+✅ Todo lo anterior fué logrado mediante muchas horas de dedicación y el desarrollo de un código limpio, prolijo y escalable.
+
+---
+
+### <center> ETL </center>
+
+Comencemos por el principio, respondiendo la siguiente pregunta ¿Que es ETL? ETL son siglas en inglés que corresponden a Extract, Transform and Load. En español sería ETC, Extracción, Transformación y Carga.
+
+Pero en nuestro proyecto, ¿Extraer qué? Bueno, uno de los inconvenientes con los que me encontré cuando comencé el proyecto, fué el de tratar de leer los archivos correspondientes a los [conjuntos de datos](#conjuntos-de-datos) previamente mencionados. Los mismos estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y con ayuda de un compañero, implementamos un código capaz de leerlos y almacenarlos dentro de un Dataframe de la librería pandas, con lo cuál se volvió mucho más manejable.
+
+En la primera tabla (user_items) hago mención a que la columna "items" era una columna anidada. Y capaz te estés preguntando ¿Que es una columna anidada? Bueno, bajo mi punto de vista, una columna anidada es una columna que en su interior contiene varios datos de distintos tipos, ¿Alguna vez vieron un ovillo de lana? 
 
 ![data_science](img/ovillo.jpg)
+
+Bueno 
+(Hago diseño en CANVA de tabla con ovillo)
 
 ---
 
@@ -118,13 +142,8 @@ Cómo conclusión y cierre, se podría terminar de hacer las otras funciones par
 Saludos y muchas gracias.
 
 
-### <center> ETL </center>
 
 
-cómo por ejemplo, la lectura
-de los archivos, que estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y tuve
-que aplicar varios procesos de ETL para poder desanidar algunas de las columnas que traían originalmente, que en su interior
-contenían varias anidadas.
 ### <center> EDA </center>
 
 ### <center> Endpoints </center>
