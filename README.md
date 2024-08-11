@@ -1,19 +1,64 @@
-En este proyecto, desarrollo el rol de un Data Scientist de Steam, una plataforma distribuidora de video juegos.
+![Banner](img/banner.png)
+-
+<center> En este proyecto, desarrollo el rol de un Científico de datos trabajando para Steam, una plataforma distribuidora de video juegos.</center>
 
 ---
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/data_science.jpg)
+![data_science](img/data_science.jpg)
 
 
-![steam](https://github.com/Tagliaferro22/steam-games/blob/main/img/logo_steam.jpg)
+![steam](img/logo_steam.jpg)
 
 ---
 
-Empecé desde 0 y terminé creando un MVP (Minimun Viable Product), me encontré con varios problemas, cómo por ejemplo, la lectura
-de los archivos, que estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y tuve
-que aplicar varios procesos de ETL para poder desanidar algunas de las columnas que traían originalmente, que en su interior
-contenían varias anidadas.
+### <center> Introducción / descripción del proyecto </center>
 
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/ovillo.jpg)
+Para este proyecto educativo me pidieron que desarrollé un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
+
+Trabajando cómo científico de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#sistema-de-recomendación)
+
+Tengo 3 conjuntos de datos que corresponden a lo que es la base de datos de Steam.
+
+- User_items: En esta tabla, tenemos disponibles todos los datos de los juegos adquiridos por determinados usuarios.
+Echando un vistazo a la tabla original nos encontramos con las siguientes columnas:
+  - user_id: Identificador único de cada usuario
+  - items_count: Cantidad de juegos que tiene el usuario
+  - steam_id: El identificador único dentro de steam
+  - user_url: El enlace para acceder a la página web dentro de Steam correspondiente al usuario 
+  - items: Los juegos del usuario, una columna anidada, de la cuál hablo con más detalle en la parte del [ETL](#etl)
+
+- User_reviews: En esta tabla, tenemos disponibles todas las reseñas hechas por los usuarios a los distitintos juegos que adquirieron. Echando un vistazo a la tabla original, nos encontramos con las siguientes columnas:
+
+  - user_id: El identificador único de cada usuario
+  - user_url: El enlace correspondiente a cada usuario.
+  - reviews: Las reseñas hechas por el usuario, nuevamente, una columna con datos anidados, que explico con más detalle en la parte del [ETL](#etl)
+
+- Steam_games: En esta tabla, tenenemos disponbibles todos los datos correspondientes a los juegos disponibles dentro de Steam, echando un vistazo a sus columnas originales, nos encontramos con:
+  - publisher: El publicador / lanzador del juego.
+  - genres: Los géneros del juego.
+  - app_name: El nombre de la aplicación / juego.
+  -	title: El titulo del juego, similar a app_name
+  -	url: El enlace dónde se puede encontrar el juego dentro de Steam
+  -	release_date: La fecha de salida del juego
+  -	tags: Las etiquetas / categorías del juego, similar a genres.
+  -	reviews_url: La página web dentro de Steam dónde están disponibles las reseñas hechas al juego.
+  -	specs: Las especificaciones del juego, similar a tags y a genres.
+  -	price: El precio del juego
+  -	early_access: Si hubo o no acceso temprano al juego
+  -	id: El identificador único de cada videojuego dentro de Steam
+  -	developer: El desarrollador del vídeojuego, similar al publisher. 
+
+Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que objetivos cumplí en este proyecto.
+
+### <center> Objetivos y alcances del proyecto </center>
+
+✅ Transformaciones: para el desarrollo de los [endpoints](#endpoints) y de los [sistemas de recomendación](#sistema-de-recomendación), me encontré con varios inconvenientes, los cuáles explico con más detalle en la parte del [ETL](#etl).
+
+✅ 
+✅
+✅
+
+
+![data_science](img/ovillo.jpg)
 
 ---
 
@@ -43,7 +88,7 @@ Tecnologías que utilicé:
 
 ---
 Para la primera función la consigna era la siguiente:
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/endpoint_1.png)
+![data_science](img/endpoint_1.png)
 
 Entonces desarrolle una función que hace lo siguiente: Primero, evalúa si el desarrollador ingresado en la función existe en el dataset, si no existe, lanza el siguiente error: "Developer not found". Si el desarrollador si existe en el dataset, la función ingresa en un bucle que itera sobre cada año de manera única en los que el desarrollador sacó al menos un videojuego. 
 Por ejemplo, si en 2015 sacó 3 juegos, en 2016 sacó 2 y en 2017 sacó 4, esos años aparecen 3, 2 y 4 veces respectivamente, por lo cuál, lo que hace el bucle es tomar esos años cómo valores únicos, apareciendo sólo una vez el 2015, el 2016 y el 2017.
@@ -63,11 +108,32 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
 
 Para el sistema de recomendación, la consigna era la siguiente:
 
-![data_science](https://github.com/Tagliaferro22/steam-games/blob/main/img/modeloML.png)
+![data_science](img/modeloML.png)
+
 Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
 
 ---
 
 Cómo conclusión y cierre, se podría terminar de hacer las otras funciones para que el trabajo quede completamente realizado, y terminar de especificar los detalles que requieren ciertas columnas, cómo por ejemplo, el tiempo de juego de un usuario, que no se sabe si está medido en horas, minutos o segundos, y es un dato bastante relevante.
 Saludos y muchas gracias.
+
+
+### <center> ETL </center>
+
+
+cómo por ejemplo, la lectura
+de los archivos, que estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y tuve
+que aplicar varios procesos de ETL para poder desanidar algunas de las columnas que traían originalmente, que en su interior
+contenían varias anidadas.
+### <center> EDA </center>
+
+### <center> Endpoints </center>
+
+### <center> Sistemas de recomendación </center>
+
+Empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
+Según [Aprende machine learning . com](https://www.aprendemachinelearning.com/sistemas-de-recomendacion/)
+"...son algoritmos que intentan 'predecir' los siguientes ítems (en nuestro proyecto, juegos) que querrá adquirir un usuario en particular."
+Estamos rodeados de sistemas de recomendación, en Instagram por ejemplo, cuando comenzamos a ver reels, y hacemos "scroll" (deslizar para ver el siguiente contenido), el próximo vídeo que nos aparezca, es aquel que el algoritmo de Instagram nos ha recomendado.
+En YouTube, cuando estamos viendo un video y nos aparece un "recomendado" o "para tí" es exactamente lo mismo. 
 
