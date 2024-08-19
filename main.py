@@ -298,6 +298,7 @@ def recomendacion_juego(id_juego):
 
     # Cargamos el dataframe de juegos que contiene 3 columnas: Item_ID (ID del juego), Item_name (nombre del juego) y categorical_string (generos, etiquetas y específicaciones del juego)
     juegos_steam = pd.read_parquet("./Datasets/recomendacion/uno/steam_games_id_name_categorical.parquet")
+    print("Archivo de juegos leído correctamente")
 
     # Definimos una variable de salida 
     salida = {}
@@ -305,13 +306,16 @@ def recomendacion_juego(id_juego):
     # Encontramos el nombre del juego y lo guardamos en el diccionario de salida
     nombre_juego = juegos_steam[juegos_steam["item_id"] == id_juego]["item_name"].iloc[0]
     salida["Nombre del juego ingresado"] = nombre_juego
+    print("Nombre del juego determinado y almacenado correctamente")
 
     # Encontramos las categorías del juego ingresado y lo guardamos en el diccionario de salida
     categorias_juego = juegos_steam[juegos_steam["item_id"] == id_juego]["categorical_string"].iloc[0]
     salida["Características del juego ingresado"] = categorias_juego
+    print("Caracteristicas del juego determinadas y almacenadas correctamente")
 
     # Buscamos el indice del juego
     indice_juego = juegos_steam[juegos_steam["item_id"] == id_juego].index[0]
+    print("Indice del juego determinado correctamente")
 
     # Según el indice del juego, cargamos uno u otro datasets. Cada dataset contiene 22530 filas y 1800 columnas, excepto el último que contiene 22530 filas y 930 columnas.
     if indice_juego <= 1799:
@@ -341,9 +345,10 @@ def recomendacion_juego(id_juego):
     elif indice_juego <= 22529:
         similitud_entre_juegos = pd.read_parquet("./Datasets/recomendacion/uno/similitud_entre_juegos13.parquet")
 
-
+    print("Condicional pasado exitosamente, archivo de similitud correctamente cargado")
     # Calculamos la distancia entre los juegos (osea, que tan similar es el juego ingresado con los demás) y los ordenamos de más similar a menos similar. Distancias es una lista de tuplas de la forma: [(Indice juego, similitud), (Indice juego, similitud), etc]
     distancias = sorted(list(enumerate(similitud_entre_juegos.loc[indice_juego])), reverse=True, key=lambda x: x[1])
+    print("Distancias encontradas correctamente")
     
     # Creamos una lista que almacena los nombres de los juegos recomendados
     juegos_recomendados = []
@@ -358,11 +363,14 @@ def recomendacion_juego(id_juego):
     for i in distancias[1:6]:
         juegos_recomendados.append(juegos_steam.iloc[i[0]].item_name)
         detalles_juego.append(juegos_steam.iloc[i[0]].categorical_string)
+    print("Primer bucle recorrido correctamente")
     
     for i,j in enumerate(juegos_recomendados):
         juegos_recomendados_y_caracteristicas[j] = detalles_juego[i]
+    print("Segundo bucle recorrido correctamente")
     
     salida["Juegos recomendados"] = juegos_recomendados_y_caracteristicas
+    print("Juegos recomendados determinados y almacenados correctamente")
 
     return salida
     
