@@ -303,6 +303,9 @@ def recomendacion_juego(id_juego):
     # Definimos una variable de salida 
     salida = {}
 
+    # Convertimos el id_juego a str para evitar inconvenientes.
+    id_juego = str(id_juego)
+
     # Encontramos el nombre del juego y lo guardamos en el diccionario de salida
     nombre_juego = juegos_steam[juegos_steam["item_id"] == id_juego]["item_name"].iloc[0]
     salida["Nombre del juego ingresado"] = nombre_juego
