@@ -306,6 +306,14 @@ def recomendacion_juego(id_juego):
     # Convertimos el id_juego a str para evitar inconvenientes.
     id_juego = str(id_juego)
 
+    # Obtenemos la fila de la tabla de juegos_steam correspondiente al id del juego ingresado
+    juego_ingresado = juegos_steam[juegos_steam["item_id"] == id_juego]
+
+    # Comprobamos si ese juego existe dentro del dataframe de juegos
+    if juego_ingresado.empty:
+        raise ValueError(f"No se encontró ningún juego con el ID {id_juego}")
+    
+    
     # Encontramos el nombre del juego y lo guardamos en el diccionario de salida
     nombre_juego = juegos_steam[juegos_steam["item_id"] == id_juego]["item_name"].iloc[0]
     salida["Nombre del juego ingresado"] = nombre_juego
