@@ -294,7 +294,7 @@ async def analisis_resenias_desarrollador_use(desarrollador : str):
 # Sistema de recomendación item-item
 def recomendacion_juego(id_juego):
     # Cargamos el archivo solo con las columnas necesarias
-    juegos_steam = pd.read_parquet("../Datasets/recomendacion/uno/steam_games_id_name_categorical.parquet", columns=["item_id", "item_name", "categorical_string"])
+    juegos_steam = pd.read_parquet("./Datasets/recomendacion/uno/steam_games_id_name_categorical.parquet", columns=["item_id", "item_name", "categorical_string"])
     
     # Transformamos el id del juego en str, para evitar inconvenientes
     id_juego = str(id_juego)
@@ -313,7 +313,7 @@ def recomendacion_juego(id_juego):
     del juego_ingresado
     
     # Determinamos qué archivo de similitud cargar
-    archivo_similitud = f"../Datasets/recomendacion/uno/similitud_entre_juegos{min(indice_juego // 1800 + 1, 13)}.parquet"
+    archivo_similitud = f"./Datasets/recomendacion/uno/similitud_entre_juegos{min(indice_juego // 1800 + 1, 13)}.parquet"
     
     # Cargamos solo la columna necesaria
     similitud_entre_juegos = pd.read_parquet(archivo_similitud, columns=[str(indice_juego)])
