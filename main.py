@@ -363,8 +363,8 @@ def recomendacion_usuario(usuario_elegido):
 
     print("Comenzando con la función")
     # Lectura de los archivos necesarios para trabajar
-    similitud_de_usuarios_coseno = pd.read_parquet("./Datasets/recomendacion/similitud_entre_usuarios.parquet")
-    matrix_norm = pd.read_parquet("./Datasets/recomendacion/matriz_normalizada.parquet")
+    similitud_de_usuarios_coseno = pd.read_parquet("./Datasets/recomendacion/dos/similitud_entre_usuarios.parquet")
+    matrix_norm = pd.read_parquet("./Datasets/recomendacion/dos/matriz_normalizada.parquet")
     logger.info(f"Tamaño 1: {similitud_de_usuarios_coseno.shape}")
     logger.info(f"Tamaño 2: {matrix_norm.shape}")
     if similitud_de_usuarios_coseno.empty or matrix_norm.empty:
