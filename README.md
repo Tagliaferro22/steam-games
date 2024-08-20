@@ -14,7 +14,7 @@
 
 Para este proyecto educativo me pidieron que desarrollé un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
 
-Trabajando cómo científico de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#sistema-de-recomendación)
+Trabajando cómo científico e ingeniero de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#sistemas-de-recomendacion)
 
 ## <center> Conjuntos de datos </center>
 
@@ -26,13 +26,19 @@ Echando un vistazo a la tabla original nos encontramos con las siguientes column
   - items_count: Cantidad de juegos que tiene el usuario
   - steam_id: El identificador único dentro de steam
   - user_url: El enlace para acceder a la página web dentro de Steam correspondiente al usuario 
-  - items: Los juegos del usuario, una columna anidada, de la cuál hablo con más detalle en la parte del [ETL](#etl)
+  - items: Los juegos del usuario, una columna anidada, de la cuál hablo con más detalle en la parte del [ETL.](#etl)
+
+La cabecera de la tabla originalmente se veía algo así:
+![Cabecera de la tabla user_items](img/user_items_cabecera.png)
 
 - User_reviews: En esta tabla, tenemos disponibles todas las reseñas hechas por los usuarios a los distitintos juegos que adquirieron. Echando un vistazo a la tabla original, nos encontramos con las siguientes columnas:
 
   - user_id: El identificador único de cada usuario
   - user_url: El enlace correspondiente a cada usuario.
-  - reviews: Las reseñas hechas por el usuario, nuevamente, una columna con datos anidados, que explico con más detalle en la parte del [ETL](#etl)
+  - reviews: Las reseñas hechas por el usuario, nuevamente, una columna con datos anidados, que explico con más detalle en la parte del [ETL.](#etl)
+
+La tabla originalmente se veía así:
+![Tabla de user_reviews](img/user_reviews_tabla_original.png)
 
 - Steam_games: En esta tabla, tenenemos disponbibles todos los datos correspondientes a los juegos disponibles dentro de Steam, echando un vistazo a sus columnas originales, nos encontramos con:
   - publisher: El publicador / lanzador del juego.
@@ -49,23 +55,26 @@ Echando un vistazo a la tabla original nos encontramos con las siguientes column
   -	id: El identificador único de cada videojuego dentro de Steam
   -	developer: El desarrollador del vídeojuego, similar al publisher. 
 
-Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que objetivos cumplí en este proyecto.
+La cabecera de la tabla originalmente se veía algo así:
+![Cabecera de la tabla steam_games](img/steam_games_cabecera.png)
 
----
+
+Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que objetivos cumplí en este proyecto.
 
 ### <center> Objetivos y alcances del proyecto </center>
 
-✅ Transformaciones: para el desarrollo de los [endpoints](#endpoints) y de los [sistemas de recomendación](#sistema-de-recomendación), me encontré con varios inconvenientes, los cuáles explico con más detalle en la parte del [ETL](#etl).
+
+✅ Transformaciones: para el desarrollo de los [endpoints](#endpoints) y de los [sistemas de recomendación](#sistemas-de-recomendacion), me encontré con varios inconvenientes, los cuáles explico con más detalle en la parte del [ETL](#etl).
 
 ✅ Análisis exploratorio de datos (EDA): Luego de haber podido leer los datos, me encargué de realizar un análisis exploratorio de los datos, el cuál explico con más detalle enla parte del [EDA](#eda).
 
 ✅ Análisis de sentimientos: A partir de las reseñas hechas por los usuarios hacia determinados juegos, determiné si se trataba de una reseña negativa, neutra o positiva.
 
-✅ Desarrollo óptimo y funcional de una API mediante el framework de FastAPI y Render. 
+✅ Desarrollo óptimo y funcional de una API mediante el framework de FastAPI y su respectivo despliegue en Render. 
 
 ✅ Desarrollo e implementación de ciertos [endpoints / funciones](#endpoints) para utilizar dentro de la API.
 
-✅ Desarrollo e implementación de modelos de Machine Learning orientados a un sistema de recomendación de videojuegos.
+✅ Desarrollo e implementación de modelos de Machine Learning orientados a dos [sistemas de recomendación de videojuegos.](#sistemas-de-recomendacion)
 
 ✅ Todo lo anterior fué logrado mediante muchas horas de dedicación y el desarrollo de un código limpio, prolijo y escalable.
 
@@ -75,14 +84,35 @@ Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y cr
 
 Comencemos por el principio, respondiendo la siguiente pregunta ¿Que es ETL? ETL son siglas en inglés que corresponden a Extract, Transform and Load. En español sería ETC, Extracción, Transformación y Carga.
 
-Pero en nuestro proyecto, ¿Extraer qué? Bueno, uno de los inconvenientes con los que me encontré cuando comencé el proyecto, fué el de tratar de leer los archivos correspondientes a los [conjuntos de datos](#conjuntos-de-datos) previamente mencionados. Los mismos estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y con ayuda de un compañero, implementamos un código capaz de leerlos y almacenarlos dentro de un Dataframe de la librería pandas, con lo cuál se volvió mucho más manejable.
+Pero en nuestro proyecto, ¿Extraer qué? Bueno, el primero de los inconvenientes con los que me encontré cuando comenzaba a desarrollar o más bien querer desarrollar el proyecto, fué el de tratar de leer los archivos correspondientes a los [conjuntos de datos](#conjuntos-de-datos) previamente mencionados.
+
+Los archivos estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y con ayuda de un compañero, implementamos un código capaz de leerlos y almacenarlos dentro de un Dataframe de la librería pandas, con lo cuál se volvió mucho más manejable.
 
 En la primera tabla (user_items) hago mención a que la columna "items" era una columna anidada. Y capaz te estés preguntando ¿Que es una columna anidada? Bueno, bajo mi punto de vista, una columna anidada es una columna que en su interior contiene varios datos de distintos tipos, ¿Alguna vez vieron un ovillo de lana? 
 
 ![data_science](img/ovillo.jpg)
 
-Bueno 
-(Hago diseño en CANVA de tabla con ovillo)
+Bueno, haciendo una análogia con un ovillo de lana, la columna items de la tabla user_items se veía justamente de la siguiente manera:
+
+![analogía](img/tabla_user_items_analogia.png)
+
+Explico con más detalle el procedimiento que seguí con esta tabla y sus justificaciones en la carpeta ETL de este mismo proyecto, específicamente en el archivo [ETL_user_items.ipynb](ETL/ETL_user_items.ipynb). 
+
+Los ovillos compartían la forma / estructura pero eran de distintos tamaños. 
+
+Resumidamente, lo que hice fué lo siguiente:
+
+En cada celda de esta columna, había una lista de diccionarios. Bueno bueno bueno, creo que me estoy poniendo muy nerd / geek...
+![nerd](img/nerd.jpg)
+
+Bueno, lo que quiero decir con esto 
+
+![Especificacion](img/columna_items_en_detalle_analogia.png)
+
+{'item_id': '10',
+  'item_name': 'Counter-Strike',
+  'playtime_forever': 6,
+  'playtime_2weeks': 0}
 
 ---
 
@@ -148,9 +178,11 @@ Saludos y muchas gracias.
 
 ### <center> Endpoints </center>
 
-### <center> Sistemas de recomendación </center>
+### <center> Sistemas de recomendacion</center>
 
-Empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
+Primero aclaro que, la palabra recomendación no tiene acento en el título porque si lo ponía no me dejaba agregar la funcionalidad de que, al hacer click te redirija a esta parte del README. 
+
+Habiendo dejado eso en claro, empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
 Según [Aprende machine learning . com](https://www.aprendemachinelearning.com/sistemas-de-recomendacion/)
 "...son algoritmos que intentan 'predecir' los siguientes ítems (en nuestro proyecto, juegos) que querrá adquirir un usuario en particular."
 Estamos rodeados de sistemas de recomendación, en Instagram por ejemplo, cuando comenzamos a ver reels, y hacemos "scroll" (deslizar para ver el siguiente contenido), el próximo vídeo que nos aparezca, es aquel que el algoritmo de Instagram nos ha recomendado.
