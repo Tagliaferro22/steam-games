@@ -1,6 +1,6 @@
 ![Banner](img/banner.png)
 -
-<center> En este proyecto, desarrollo el rol de un Científico de datos trabajando para Steam, una plataforma distribuidora de video juegos.</center>
+<center> En este proyecto, desarrollo el rol de un Científico de datos trabajando para Steam, una plataforma distribuidora de videojuegos.</center>
 
 ---
 ![data_science](img/data_science.jpg)
@@ -12,9 +12,21 @@
 
 # <center> Introducción / descripción del proyecto </center>
 
-Para este proyecto educativo me pidieron que desarrollé un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
+Para este proyecto educativo me pidieron que desarrolle un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
 
 Trabajando cómo científico e ingeniero de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#sistemas-de-recomendacion)
+
+Para este proyecto, utilicé una serie de tecnologías, las cuales se listan a continuación:
+- Python
+- Visual Studio Code
+- Pandas
+- Numpy
+- Scikit-learn
+- Uvicorn
+- FastAPI
+- Ast
+- Matplotlib
+- Render
 
 ## <center> Conjuntos de datos </center>
 
@@ -164,19 +176,6 @@ Machine Learning. Los mismos están contenidos en el archivo principal, llamado 
 Para darle "vida" a la API, usé un framework llamado FastAPI con el que pude desplegar mi API de forma local, luego subí las carpetas que usé a GitHub, y realicé un despliegue de manera "global" u "online" mediante Render para que cualquier persona con acceso a internet pueda usar la API que desarrollé. 
 
 ---
-
-Tecnologías que utilicé:
-- Python
-- Visual Studio Code
-- Pandas
-- Numpy
-- Scikit-learn
-- Uvicorn
-- FastAPI
-- Ast
-- Matplotlib
-- Render
-
 
 ---
 
