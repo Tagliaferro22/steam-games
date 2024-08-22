@@ -118,7 +118,39 @@ Si hacemos zoom a la primera celda por ejemplo, podríamos ver algo así:
 
 ![zoom](img/columna_items_zoom_celda.png)
 
+Vemos que en la imagen anterior hay 4 columnas, que son las equivalentes a las 4 cuerdas con las que hacía la analogía. Las columnas son:
 
+- item_id: El ID único de cada videojuego.
+- item_name: El nombre del juego
+- playtime_forever: la cantidad total de tiempo invertido por el usuario en ese juego.
+- playtime_2weeks: La cantidad total de tiempo invertido por el usuario las últimas 2 semanas.
+
+Además de esas 4 columnas, en la imagen se pueden ver 5 filas, pero en realidad, la cantidad de filas era exactamente el valor contenido en la columna previamente eliminada items_count, por ejemplo, para el primer usuario, había 277 filas, que equivalían a 277 juegos que posee ese primer usuario dentro de la tabla user_items.
+
+Cómo esas 277 filas estaban contenidas en una única celda (y por eso anteriormente decía que la columna estaba anidada), lo que hice fué desanidar cada una de esas celdas, pudiendo ver así, sus respectivas filas incluidas. 
+
+Hacer esto obviamente multiplicó el tamaño del conjunto de datos enormemente, ya sólo con el primer usuario, tenía 277 filas más, por que cada usuario puede tener más de un juego (y de hecho la mayoría tenía más de un juego). 
+
+La estructura resultante de esta transformación se podía ver así:
+
+![Tabla desanidada](img/tabla_user_items_desanidada.png)
+
+Lo que hice fué conservar la columna user_id al final y repetirla por cada juego que tenga ese usuario, para saber a quién le corresponde cada juego.
+
+Con esta hermosa transformación pasé de una tabla de 88310x5 a una tabla de 5153209x5... 
+
+Algo similar hice en la tabla user_reviews. Originalmente esta tabla tenía 25799 filas x 3 columnas. 
+
+La tabla originalmente se veía así:
+![Tabla user_reviews original](img/user_reviews_tabla_original.png)
+
+La columna user_url no la iba a utilizar, así que sólo conservé user_url y reviews. La cosa es que nuevamente tenía la misma situación: un usuario puede hacer más de una reseña, entonces la columna reviews estaba anidada. En su interior tenía 7 columnas (7 cuerdas si seguimos con la analogía), y la cantidad de filas dependía de la cantidad de reseñas que había hecho el usuario.
+
+Finalmente, la tabla resultante de la transformación se ve así:
+
+![Tabla user_reviews desanidada](img/user_reviews_desanidada.png)
+
+Y colorín colorado, la explicación "sencilla" de las transformaciones se ha terminado. Ya que la tabla steam_games no requirió una importante transformación, sino que la única transformación que tuvo fué la de descompresión del archivo .gzip
 
 ---
 
@@ -147,7 +179,23 @@ Tecnologías que utilicé:
 
 
 ---
-Para la primera función la consigna era la siguiente:
+
+---
+
+---
+
+Cómo conclusión y cierre, se podría terminar de hacer las otras funciones para que el trabajo quede completamente realizado, y terminar de especificar los detalles que requieren ciertas columnas, cómo por ejemplo, el tiempo de juego de un usuario, que no se sabe si está medido en horas, minutos o segundos, y es un dato bastante relevante.
+Saludos y muchas gracias.
+
+
+
+
+### <center> EDA </center>
+
+### <center> Endpoints </center>
+
+- Primer endpoint: Para la función correspondiente al primer endpoint, la consigna era la siguiente:
+
 ![data_science](img/endpoint_1.png)
 
 Entonces desarrolle una función que hace lo siguiente: Primero, evalúa si el desarrollador ingresado en la función existe en el dataset, si no existe, lanza el siguiente error: "Developer not found". Si el desarrollador si existe en el dataset, la función ingresa en un bucle que itera sobre cada año de manera única en los que el desarrollador sacó al menos un videojuego. 
@@ -164,25 +212,7 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
             "Contenido gratuito (%)": f"{(cant_items_gratuitos_anual / cant_items_anual) * 100}%"}
         }
 
----
 
-Para el sistema de recomendación, la consigna era la siguiente:
-
-![data_science](img/modeloML.png)
-
-Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
-
----
-
-Cómo conclusión y cierre, se podría terminar de hacer las otras funciones para que el trabajo quede completamente realizado, y terminar de especificar los detalles que requieren ciertas columnas, cómo por ejemplo, el tiempo de juego de un usuario, que no se sabe si está medido en horas, minutos o segundos, y es un dato bastante relevante.
-Saludos y muchas gracias.
-
-
-
-
-### <center> EDA </center>
-
-### <center> Endpoints </center>
 
 ### <center> Sistemas de recomendacion</center>
 
@@ -194,3 +224,8 @@ Según [Aprende machine learning . com](https://www.aprendemachinelearning.com/s
 Estamos rodeados de sistemas de recomendación, en Instagram por ejemplo, cuando comenzamos a ver reels, y hacemos "scroll" (deslizar para ver el siguiente contenido), el próximo vídeo que nos aparezca, es aquel que el algoritmo de Instagram nos ha recomendado.
 En YouTube, cuando estamos viendo un video y nos aparece un "recomendado" o "para tí" es exactamente lo mismo. 
 
+Para el sistema de recomendación, la consigna era la siguiente:
+
+![data_science](img/modeloML.png)
+
+Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
