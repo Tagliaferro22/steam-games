@@ -40,7 +40,7 @@ Echando un vistazo a la tabla original nos encontramos con las siguientes column
   - user_url: El enlace para acceder a la página web dentro de Steam correspondiente al usuario 
   - items: Los juegos del usuario, una columna anidada, de la cuál hablo con más detalle en la parte del [ETL.](#etl)
 
-La cabecera de la tabla originalmente se veía algo así:
+La cabecera de la tabla originalmente se veía así:
 ![Cabecera de la tabla user_items](img/user_items_cabecera.png)
 
 - User_reviews: En esta tabla, tenemos disponibles todas las reseñas hechas por los usuarios a los distitintos juegos que adquirieron. Echando un vistazo a la tabla original, nos encontramos con las siguientes columnas:
@@ -49,7 +49,7 @@ La cabecera de la tabla originalmente se veía algo así:
   - user_url: El enlace correspondiente a cada usuario.
   - reviews: Las reseñas hechas por el usuario, nuevamente, una columna con datos anidados, que explico con más detalle en la parte del [ETL.](#etl)
 
-La tabla originalmente se veía así:
+Un fragmento de la tabla originalmente se veía así:
 ![Tabla de user_reviews](img/user_reviews_tabla_original.png)
 
 - Steam_games: En esta tabla, tenenemos disponbibles todos los datos correspondientes a los juegos disponibles dentro de Steam, echando un vistazo a sus columnas originales, nos encontramos con:
@@ -67,7 +67,7 @@ La tabla originalmente se veía así:
   -	id: El identificador único de cada videojuego dentro de Steam
   -	developer: El desarrollador del vídeojuego, similar al publisher. 
 
-La cabecera de la tabla originalmente se veía algo así:
+La cabecera de la tabla originalmente se veía así:
 ![Cabecera de la tabla steam_games](img/steam_games_cabecera.png)
 
 
