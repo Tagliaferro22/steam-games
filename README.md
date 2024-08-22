@@ -96,23 +96,29 @@ Bueno, haciendo una análogia con un ovillo de lana, la columna items de la tabl
 
 ![analogía](img/tabla_user_items_analogia.png)
 
-Explico con más detalle el procedimiento que seguí con esta tabla y sus justificaciones en la carpeta ETL de este mismo proyecto, específicamente en el archivo [ETL_user_items.ipynb](ETL/ETL_user_items.ipynb). 
+Explico con más detalle el procedimiento que seguí con esta tabla (user_items) y sus justificaciones en la carpeta ETL de este mismo proyecto, específicamente en el archivo [ETL_user_items.ipynb](ETL/ETL_user_items.ipynb). 
 
 Los ovillos compartían la forma / estructura pero eran de distintos tamaños. 
 
 Resumidamente, lo que hice fué lo siguiente:
 
 En cada celda de esta columna, había una lista de diccionarios. Bueno bueno bueno, creo que me estoy poniendo muy nerd / geek...
+
 ![nerd](img/nerd.jpg)
 
-Bueno, lo que quiero decir con esto 
+Bueno, lo que quiero decir con esto, es que la columna se "veía" similar a la siguiente imagen. 
 
 ![Especificacion](img/columna_items_en_detalle_analogia.png)
 
-{'item_id': '10',
-  'item_name': 'Counter-Strike',
-  'playtime_forever': 6,
-  'playtime_2weeks': 0}
+Cómo vemos, los ovillos no eran exactamente ovillos (era una lista de diccionarios), sino que era un conjunto de datos que compartían la misma estructura. Siguiendo con la analogía, en cada celda, había una lista (que sería en este caso la cuerda superior que está atada) y dentro de esta misma estaban contenidas cuerdas. En todas las celdas había 4 cuerdas, lo que cambiaba era el largo de estas 4 cuerdas. Y si nos ponemos más especificos, el largo de estas 4 cuerdas estaba determinado por una columna llamada items_count.
+
+A partir de esta situación, y en base a los requisitos del proyecto, en el proceso de transformación de esta tabla, decidí quedarme sólo con dos columnas: user_id e items. Originalmente la tabla tenía 88310 filas y 5 columnas. Luego de este cambio se quedó con 88310 filas y 2 columnas.
+
+Si hacemos zoom a la primera celda por ejemplo, podríamos ver algo así:
+
+![zoom](img/columna_items_zoom_celda.png)
+
+
 
 ---
 
