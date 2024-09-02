@@ -17,10 +17,11 @@ Para este proyecto educativo me pidieron que desarrolle un _MVP (Minimun Viable 
 Trabajando cómo científico e ingeniero de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#-sistemas-de-recomendacion)
 
 Para este proyecto, utilicé una serie de tecnologías, las cuales se listan a continuación:
-- Python
-- Visual Studio Code
-- Pandas
-- Numpy
+- Python: Para el despliegue de la API mediante FastAPI y Render
+- Jupyter Notebook: Para la creación y desarrollo tanto de los sistemas de recomendación cómo de los endpoints que se me pedían para este proyecto.
+- Visual Studio Code: Para escribir el código
+- Pandas: Para leer los conjuntos de datos los cuáles explico con más detalle [a continuación.](#-conjuntos-de-datos)
+- Numpy: Para complementar a la librería pandas.
 - Scikit-learn
 - Uvicorn
 - FastAPI
