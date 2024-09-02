@@ -1,6 +1,6 @@
 ![Banner](img/banner.png)
 -
-<center> En este proyecto, desarrollo el rol de un Científico de datos trabajando para Steam, una plataforma distribuidora de videojuegos.</center>
+<center> Bienvenidos sean a este proyecto, en el cuál desarrollo el rol de un Científico de datos trabajando para Steam, una plataforma distribuidora de videojuegos.</center>
 
 ---
 ![data_science](img/data_science.jpg)
@@ -14,7 +14,7 @@
 
 Para este proyecto educativo me pidieron que desarrolle un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
 
-Trabajando cómo científico e ingeniero de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#sistemas-de-recomendacion)
+Trabajando cómo científico e ingeniero de datos dentro de Steam, soy el encargado de crear un sistema de recomendación de videojuegos para usuarios. El cuál explico con más detalle [mas adelante.](#-sistemas-de-recomendacion)
 
 Para este proyecto, utilicé una serie de tecnologías, las cuales se listan a continuación:
 - Python
