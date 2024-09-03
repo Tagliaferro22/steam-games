@@ -52,7 +52,7 @@ La cabecera de la tabla originalmente se veía así:
 Un fragmento de la tabla originalmente se veía así:
 ![Tabla de user_reviews](img/user_reviews_tabla_original.png)
 
-- Steam_games: En esta tabla, tenenemos disponbibles todos los datos correspondientes a los juegos disponibles dentro de Steam, echando un vistazo a sus columnas originales, nos encontramos con:
+- Steam_games: En esta tabla, tenenemos todos los datos correspondientes a los juegos disponibles dentro de Steam, echando un vistazo a sus columnas originales, nos encontramos con:
   - publisher: El publicador / lanzador del juego.
   - genres: Los géneros del juego.
   - app_name: El nombre de la aplicación / juego.
@@ -71,7 +71,7 @@ La cabecera de la tabla originalmente se veía así:
 ![Cabecera de la tabla steam_games](img/steam_games_cabecera.png)
 
 
-Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que objetivos cumplí en este proyecto.
+Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que alcances tiene el proyecto y los objetivos que cumplí en el mismo.
 
 ### <center> Objetivos y alcances del proyecto </center>
 
