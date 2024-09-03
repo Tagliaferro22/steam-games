@@ -10,7 +10,7 @@
 
 ---
 
-# <center> Introducción / descripción del proyecto </center>
+# Introducción / descripción del proyecto 
 
 Para este proyecto educativo me pidieron que desarrolle un _MVP (Minimun Viable Product / Producto Mínimo Viable)_ para la plataforma distribuidora de videojuegos **Steam**. 
 
@@ -20,16 +20,15 @@ Para este proyecto, utilicé una serie de tecnologías, las cuales se listan a c
 - Python: Para el despliegue de la API mediante FastAPI y Render
 - Jupyter Notebook: Para la creación y desarrollo tanto de los sistemas de recomendación cómo de los endpoints que se me pedían para este proyecto.
 - Visual Studio Code: Para escribir el código
-- Pandas: Para leer los conjuntos de datos los cuáles explico con más detalle [a continuación.](#-conjuntos-de-datos)
+- Pandas: Para leer los conjuntos de datos los cuáles explico con más detalle [a continuación.](#conjuntos-de-datos)
 - Numpy: Para complementar a la librería pandas.
-- Scikit-learn
-- Uvicorn
-- FastAPI
-- Ast
-- Matplotlib
-- Render
+- Scikit-learn: Para implementar el algoritmo de similitud del coseno, y con ello, desarrollar ambos sistemas de recomendación.
+- Uvicorn: Uvicorn es una implementación de servidor web ASGI para Python.
+- FastAPI: Para desarrollar la API de manera local, y posteriormente probar su despliegue de forma remota (si es que funcionaba correctamente)
+- Matplotlib y seaborn: Para gráficar los datos dentro del EDA
+- Render: Para desplegar la API desarrollada previamente mediante FastAPI de forma remota.
 
-## <center> Conjuntos de datos </center>
+# Conjuntos de datos 
 
 Tengo 3 conjuntos de datos que corresponden a lo que es la base de datos de Steam.
 
