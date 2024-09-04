@@ -172,42 +172,38 @@ Con esta hermosa transformación pasé de una tabla modesta de 88310 filas x 5 c
 Algo similar a lo que hice en la tabla user_items hice con la tabla user_reviews. Originalmente esta tabla tenía 25799 filas x 3 columnas. Y originalmente se veía así:
 ![Tabla user_reviews original](img/user_reviews_tabla_original.png)
 
-La columna user_url no la iba a utilizar, así que sólo conservé user_id y reviews. La cosa es que nuevamente tenía la misma situación: un usuario puede hacer más de una reseña, entonces la columna reviews estaba anidada. En su interior tenía 7 columnas (7 cuerdas si seguimos con la analogía), y la cantidad de filas dependía de la cantidad de reseñas que había hecho el usuario, con la diferencía de que no tenía en esta tabla una columna llamada reviews_count o un nombre similar que me indicase la cantidad de reviews por usuario. De todas formas, esta información no me servía.
-
+La columna user_url no la iba a utilizar, así que sólo conservé user_id y reviews. La cosa es que nuevamente tenía la misma situación: un usuario puede hacer más de una reseña, entonces la columna reviews estaba anidada. En su interior contenía nuevamente una lista de diccionarios, con los cuáles, definí que las claves sean columnas. 7 Claves en el interior de cada diccionario (7 cuerdas si seguimos con la analogía), y la cantidad de filas dependía de la cantidad de reseñas que había hecho el usuario, con la diferencía de que no tenía en esta tabla una columna llamada reviews_count o un nombre similar que me indicase la cantidad de reviews por usuario. 
 Finalmente, la tabla resultante de la transformación se ve así:
-
 ![Tabla user_reviews desanidada](img/user_reviews_desanidada.png)
+
+En la anterior imagen podemos observar que la columna correspondiente al user_id lo conservé, y el resto de columnas corresponden a lo que estaba dentro de la columna reviews.
 
 Y colorín colorado, la explicación "sencilla" de las transformaciones se ha terminado. Ya que la tabla steam_games no requirió una importante transformación, sino que la única transformación que tuvo fué la de descompresión del archivo .gzip
 
 ---
-
-Trabajé principalmente con un dataset, el cuál se llama "steam_games", en él se encuentran varios datos acerca de los juegos, 
-cómo por ejemplo su nombre, desarrollador, fecha de lanzamiento, id, precio entre otras cosas. 
-Los datasets tal cuál me los dieron, están en la carpeta rawData dentro de la carpeta ETL (ETL/rawData), en ella, desarrollé todo el proceso de ETL que consideré necesario para cada uno de los archivos individualmente. Luego de este proceso, exporté
-los datasets resultantes en formato .parquet con compresión snappy a la carpeta EDA, para justamente hacer lo que el nombre
-de la carpeta indica. En ella, realicé un análisis exploratorio de los datasets, y terminé de hacer ciertas transformaciones
-que consideré necesarias para la función de la API que desarrollé y el sistema de recomendación implementando modelos de 
-Machine Learning. Los mismos están contenidos en el archivo principal, llamado main.py.
-Para darle "vida" a la API, usé un framework llamado FastAPI con el que pude desplegar mi API de forma local, luego subí las carpetas que usé a GitHub, y realicé un despliegue de manera "global" u "online" mediante Render para que cualquier persona con acceso a internet pueda usar la API que desarrollé. 
-
 ---
 
----
+# EDA 
+
+## EDA - Introducción
+Al igual que hicimos en la parte del ETL, empecemos respondiendo la siguiente pregunta: ¿Qué es EDA? EDA son las siglas en inglés que corresponden a la frase: "Exploratory Data Analysis", en español sería: "Análisis exploratorio de datos / análisis exploratorio de los datos". Según [nuclio . school:](https://nuclio.school/blog/eda-exploratory-data-analysis/) "El EDA ... es una técnica estadística que apunta a revelar estructuras subyacentes, identificar patrones o anomalías y cualquier indicio de relaciones clave que existan en un conjunto de datos o data set. El objetivo del EDA no es confirmar hipótesis sino que se centra en generar preguntas y sus posibles direcciones para las investigaciones futuras. 
+Para entenderlo mejor: el EDA en el Data Science es el arte de hacer preguntas más que el de buscar respuestas específicas.
+El EDA se centra en la curiosidad y la apertura mental, tratando de explorar los datos con una mente abierta, sin hipótesis preconcebidas. La aproximación se hace desde un entendimiento más profundo y holístico de los datos". Me encantó la definición, y por eso la compartí.
+Básicamente el proceso de EDA es un proceso inicial que idealmente debería hacerse con cada conjunto de datos con el cuál se esté trajando, para conocerlo más en profundidad. En este proyecto, al tener 3 conjuntos de datos, me tocó hacerles un EDA a cada uno de ellos.
 
 ---
+## EDA - User_items
+
 
 ---
+## EDA - User_reviews
+---
+## EDA - Steam_games
 
-Cómo conclusión y cierre, se podría terminar de hacer las otras funciones para que el trabajo quede completamente realizado, y terminar de especificar los detalles que requieren ciertas columnas, cómo por ejemplo, el tiempo de juego de un usuario, que no se sabe si está medido en horas, minutos o segundos, y es un dato bastante relevante.
-Saludos y muchas gracias.
+---
+---
 
-
-
-
-### <center> EDA </center>
-
-### <center> Endpoints </center>
+# <center> Endpoints </center>
 
 - Primer endpoint: Para la función correspondiente al primer endpoint, la consigna era la siguiente:
 
@@ -228,6 +224,8 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
         }
 
 
+---
+---
 
 ### <center> Sistemas de recomendacion</center>
 
@@ -244,3 +242,11 @@ Para el sistema de recomendación, la consigna era la siguiente:
 ![data_science](img/modeloML.png)
 
 Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
+
+---
+---
+
+# Conclusión y cierre
+
+Cómo conclusión y cierre, se podría terminar de hacer las otras funciones para que el trabajo quede completamente realizado, y terminar de especificar los detalles que requieren ciertas columnas, cómo por ejemplo, el tiempo de juego de un usuario, que no se sabe si está medido en horas, minutos o segundos, y es un dato bastante relevante.
+Saludos y muchas gracias.
