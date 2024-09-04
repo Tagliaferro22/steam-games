@@ -100,11 +100,15 @@ Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y cr
 
 # <center> ETL </center>
 
+## ETL - Introducción
+
 Comencemos por el principio, respondiendo la siguiente pregunta ¿Que es ETL? ETL son siglas en inglés que corresponden a Extract, Transform and Load. En español sería ETC, Extracción, Transformación y Carga.
 
 Pero en nuestro proyecto, ¿Extraer qué? Bueno, el primero de los inconvenientes con los que me encontré cuando comenzaba a desarrollar o más bien querer desarrollar el proyecto, fué el de tratar de leer los archivos correspondientes a los [conjuntos de datos](#conjuntos-de-datos) previamente mencionados.
 
 Los archivos estaban comprimidos en un formato que desconocía (.gzip); era un dataset almacenado en formato JSON y con ayuda de un compañero, implementamos un código capaz de leerlos y almacenarlos dentro de un Dataframe de la librería pandas, con lo cuál se volvió mucho más manejable.
+
+## ETL - User_reviews
 
 En la primera tabla (user_items) hago mención a que la columna "items" era una columna anidada. Y capaz te estés preguntando ¿Que es una columna anidada? Bueno, bajo mi punto de vista, una columna anidada es una columna que en su interior contiene varios datos de distintos tipos, ¿Alguna vez vieron un ovillo de lana? 
 
@@ -163,12 +167,12 @@ Con esta hermosa transformación pasé de una tabla modesta de 88310 filas x 5 c
 
 ---
 
-Algo similar hice en la tabla user_reviews. Originalmente esta tabla tenía 25799 filas x 3 columnas. 
+## ETL - User_reviews
 
-La tabla originalmente se veía así:
+Algo similar a lo que hice en la tabla user_items hice con la tabla user_reviews. Originalmente esta tabla tenía 25799 filas x 3 columnas. Y originalmente se veía así:
 ![Tabla user_reviews original](img/user_reviews_tabla_original.png)
 
-La columna user_url no la iba a utilizar, así que sólo conservé user_url y reviews. La cosa es que nuevamente tenía la misma situación: un usuario puede hacer más de una reseña, entonces la columna reviews estaba anidada. En su interior tenía 7 columnas (7 cuerdas si seguimos con la analogía), y la cantidad de filas dependía de la cantidad de reseñas que había hecho el usuario.
+La columna user_url no la iba a utilizar, así que sólo conservé user_id y reviews. La cosa es que nuevamente tenía la misma situación: un usuario puede hacer más de una reseña, entonces la columna reviews estaba anidada. En su interior tenía 7 columnas (7 cuerdas si seguimos con la analogía), y la cantidad de filas dependía de la cantidad de reseñas que había hecho el usuario, con la diferencía de que no tenía en esta tabla una columna llamada reviews_count o un nombre similar que me indicase la cantidad de reviews por usuario. De todas formas, esta información no me servía.
 
 Finalmente, la tabla resultante de la transformación se ve así:
 
