@@ -9,6 +9,7 @@
 ![steam](img/logo_steam.jpg)
 
 ---
+---
 
 # Introducción / descripción del proyecto 
 
@@ -27,6 +28,9 @@ Para este proyecto, utilicé una serie de tecnologías, las cuales se listan a c
 - FastAPI: Para desarrollar la API de manera local, y posteriormente probar su despliegue de forma remota (si es que funcionaba correctamente)
 - Matplotlib y seaborn: Para gráficar los datos dentro del EDA
 - Render: Para desplegar la API desarrollada previamente mediante FastAPI de forma remota.
+
+---
+---
 
 # Conjuntos de datos 
 
@@ -73,14 +77,16 @@ La cabecera de la tabla originalmente se veía así:
 
 Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y creé un MVP (Minimun Viable Product) con varias funcionalidades. Pero primero, veamos que alcances tiene el proyecto y los objetivos que cumplí en el mismo.
 
-### <center> Objetivos y alcances del proyecto </center>
+---
+---
 
+# <center> Objetivos y alcances del proyecto </center>
 
-✅ Transformaciones: para el desarrollo de los [endpoints](#endpoints) y de los [sistemas de recomendación](#sistemas-de-recomendacion), me encontré con varios inconvenientes, los cuáles explico con más detalle en la parte del [ETL](#etl).
+✅ Transformaciones: para el desarrollo de los [endpoints](#endpoints) y de los [sistemas de recomendación,](#sistemas-de-recomendacion) me encontré con varios inconvenientes, los cuáles explico con más detalle en la parte del [ETL.](#etl)
 
-✅ Análisis exploratorio de datos (EDA): Luego de haber podido leer los datos, me encargué de realizar un análisis exploratorio de los datos, el cuál explico con más detalle enla parte del [EDA](#eda).
+✅ Análisis exploratorio de datos (EDA): Luego de haber podido leer los datos, me encargué de realizar un análisis exploratorio de los datos, el cuál explico con más detalle en la parte del [EDA.](#eda)
 
-✅ Análisis de sentimientos: A partir de las reseñas hechas por los usuarios hacia determinados juegos, determiné si se trataba de una reseña negativa, neutra o positiva.
+✅ Análisis de sentimientos: A partir del texto de las reseñas hechas por los usuarios hacia determinados juegos, determiné si se trataba de una reseña negativa, neutra o positiva.
 
 ✅ Desarrollo óptimo y funcional de una API mediante el framework de FastAPI y su respectivo despliegue en Render. 
 
@@ -92,7 +98,7 @@ Con todas estas tablas, sus columnas y sus datos asociados, empecé desde 0 y cr
 
 ---
 
-### <center> ETL </center>
+# <center> ETL </center>
 
 Comencemos por el principio, respondiendo la siguiente pregunta ¿Que es ETL? ETL son siglas en inglés que corresponden a Extract, Transform and Load. En español sería ETC, Extracción, Transformación y Carga.
 
@@ -108,7 +114,7 @@ Bueno, haciendo una análogia con un ovillo de lana, la columna items de la tabl
 
 ![analogía](img/tabla_user_items_analogia.png)
 
-Explico con más detalle el procedimiento que seguí con esta tabla (user_items) y sus justificaciones en la carpeta ETL de este mismo proyecto, específicamente en el archivo [ETL_user_items.ipynb](ETL/ETL_user_items.ipynb). 
+Explico con más detalle el procedimiento técnico que seguí con esta tabla (user_items) y sus justificaciones en la carpeta ETL de este mismo proyecto, específicamente en el archivo [ETL_user_items.ipynb.](ETL/ETL_user_items.ipynb) 
 
 Los ovillos compartían la forma / estructura pero eran de distintos tamaños. 
 
@@ -122,34 +128,40 @@ Bueno, lo que quiero decir con esto, es que la columna se "veía" similar a la s
 
 ![Especificacion](img/columna_items_en_detalle_analogia.png)
 
-Cómo vemos, los ovillos no eran exactamente ovillos (era una lista de diccionarios), sino que era un conjunto de datos que compartían la misma estructura. Siguiendo con la analogía, en cada celda, había una lista (que sería en este caso la cuerda superior que está atada) y dentro de esta misma estaban contenidas cuerdas. En todas las celdas había 4 cuerdas, lo que cambiaba era el largo de estas 4 cuerdas. Y si nos ponemos más especificos, el largo de estas 4 cuerdas estaba determinado por una columna llamada items_count.
+Cómo vemos, los ovillos no eran exactamente ovillos (era una lista de diccionarios), sino que era un conjunto de datos que compartían la misma estructura. Siguiendo con la analogía, en cada celda, había una lista (que sería en este caso la cuerda superior que está atada) y dentro de esta misma estaban contenidas cuerdas. En todas las celdas había 4 cuerdas, lo que cambiaba era el largo de estas 4 cuerdas. Y siendo más claros, el largo de estas 4 cuerdas estaba determinado por una columna llamada items_count, la cuál, mediante un número entero, indicaba cuantos juegos tiene el usuario.
 
 A partir de esta situación, y en base a los requisitos del proyecto, en el proceso de transformación de esta tabla, decidí quedarme sólo con dos columnas: user_id e items. Originalmente la tabla tenía 88310 filas y 5 columnas. Luego de este cambio se quedó con 88310 filas y 2 columnas.
 
-Si hacemos zoom a la primera celda por ejemplo, podríamos ver algo así:
+Ahora, ¿por qué decidí dejar esas dos columnas? Esas y otras justificaciones se pueden encontrar en el archivo en dónde le hice el ETL a este conjunto de datos, pero de forma breve y resumida, user_id me daba información de que usuario tenía determinado juego, e items me daba información de los juegos que tenía el usuario.
+
+Si "hiciesemos zoom" a la primera celda por ejemplo, podríamos ver algo así:
 
 ![zoom](img/columna_items_zoom_celda.png)
 
-Vemos que en la imagen anterior hay 4 columnas, que son las equivalentes a las 4 cuerdas con las que hacía la analogía. Las columnas son:
+Vemos que en la imagen, las 4 cuerdas que colgaban, corresponden a 4 columnas, por eso hacía la analogía. 
+
+Las columnas dentro de la columna item (que en realidad, la columna items si recordamos era una lista de diccionarios, por lo cuál, "sus columnas" eran en realidad las llaves de este diccionario) son:
 
 - item_id: El ID único de cada videojuego.
 - item_name: El nombre del juego
 - playtime_forever: la cantidad total de tiempo invertido por el usuario en ese juego.
 - playtime_2weeks: La cantidad total de tiempo invertido por el usuario las últimas 2 semanas.
 
-Además de esas 4 columnas, en la imagen se pueden ver 5 filas, pero en realidad, la cantidad de filas era exactamente el valor contenido en la columna previamente eliminada items_count, por ejemplo, para el primer usuario, había 277 filas, que equivalían a 277 juegos que posee ese primer usuario dentro de la tabla user_items.
+En la imagen también se pueden ver 5 filas, pero en realidad, la cantidad de filas era exactamente el valor contenido en la columna previamente eliminada items_count, por ejemplo, para el primer usuario, había 277 filas, que equivalían a 277 juegos que posee ese primer usuario dentro de la tabla user_items.
 
-Cómo esas 277 filas estaban contenidas en una única celda (y por eso anteriormente decía que la columna estaba anidada), lo que hice fué desanidar cada una de esas celdas, pudiendo ver así, sus respectivas filas incluidas. 
+Cómo esas 277 filas estaban contenidas en **una única celda** (y por eso anteriormente decía que la columna estaba anidada), lo que hice fué desanidar cada una de esas celdas, pudiendo ver así, sus respectivas filas incluidas. Es cómo si hubiese desenrollado el ovillo. 
 
-Hacer esto obviamente multiplicó el tamaño del conjunto de datos enormemente, ya sólo con el primer usuario, tenía 277 filas más, por que cada usuario puede tener más de un juego (y de hecho la mayoría tenía más de un juego). 
+Hacer esto obviamente multiplicó el tamaño del conjunto de datos enormemente, ya sólo con el primer usuario, tenía 276 filas más, por que cada usuario puede tener más de un juego (y de hecho la mayoría tenía más de un juego). 
 
-La estructura resultante de esta transformación se podía ver así:
+La estructura resultante de esta transformación se vió así:
 
 ![Tabla desanidada](img/tabla_user_items_desanidada.png)
 
-Lo que hice fué conservar la columna user_id al final y repetirla por cada juego que tenga ese usuario, para saber a quién le corresponde cada juego.
+Basicamente conservé todas las "columnas" (pongo entre comillas porque ya aclaré previamente que en realidad eran llaves del diccionario que se repetían en todos los diccionarios) correspondientes a la columna items y conservé la columna user_id al final y la repetí por cada juego que tenga el usuario en cuestión, para saber a quién le corresponde cada juego.
 
-Con esta hermosa transformación pasé de una tabla de 88310x5 a una tabla de 5153209x5... 
+Con esta hermosa transformación pasé de una tabla modesta de 88310 filas x 5 columnas a un monstruo de 5153209 de filas x 5 columnas... 
+
+---
 
 Algo similar hice en la tabla user_reviews. Originalmente esta tabla tenía 25799 filas x 3 columnas. 
 
