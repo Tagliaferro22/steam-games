@@ -192,18 +192,22 @@ El EDA se centra en la curiosidad y la apertura mental, tratando de explorar los
 Básicamente el proceso de EDA es un proceso inicial que idealmente debería hacerse con cada conjunto de datos con el cuál se esté trajando, para conocerlo más en profundidad. En este proyecto, al tener 3 conjuntos de datos, me tocó hacerles un EDA a cada uno de ellos.
 
 ---
-## EDA - User_items
+## EDA - Steam_games
+Este fué el primer conjunto de datos al cuál le apliqué el proceso de EDA.
+Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_steam_games.ipynb,](EDA/EDA_steam_games.ipynb) en el mismo identifiqué datos nulos, borré las columnas que no consideré óptimas para el desarrollo de los endpoints y de los sistemas de recomendación y presenté algunos gráficos para visualizar mejor la información.
 
+---
+## EDA - User_items
+Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_items.ipynb,](EDA/EDA_user_items.ipynb) en el mismo presenté gráficos para visualizar mejor la información proporcionada por los datos.
 
 ---
 ## EDA - User_reviews
----
-## EDA - Steam_games
+Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_reviews.ipynb,](EDA/EDA_user_reviews.ipynb) en el mismo presenté gráficos para visualizar mejor la información proporcionada por los datos.
 
 ---
 ---
 
-# <center> Endpoints </center>
+#  Endpoints 
 
 - Primer endpoint: Para la función correspondiente al primer endpoint, la consigna era la siguiente:
 
@@ -227,7 +231,7 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
 ---
 ---
 
-### <center> Sistemas de recomendacion</center>
+# Sistemas de recomendacion
 
 Primero aclaro que, la palabra recomendación no tiene acento en el título porque si lo ponía no me dejaba agregar la funcionalidad de que, al hacer click te redirija a esta parte del README. 
 
