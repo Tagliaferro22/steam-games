@@ -194,7 +194,7 @@ Básicamente el proceso de EDA es un proceso inicial que idealmente debería hac
 ---
 ## EDA - Steam_games
 Este fué el primer conjunto de datos al cuál le apliqué el proceso de EDA.
-De forma muy breve y resumida (todos los procedimientos hechos se pueden encontrar en el archivo [EDA_steam_games.ipynb,](EDA/EDA_steam_games.ipynb)) identifiqué y traté los datos nulos, principalmente eran filas completamente vacías, que representaban casi la totalidad del dataset cómo se puede ver en el siguiente gráfico:
+De forma muy breve y resumida (todos los procedimientos hechos se pueden encontrar en el archivo [EDA_steam_games.ipynb](EDA/EDA_steam_games.ipynb)) identifiqué y traté los datos nulos, principalmente eran filas completamente vacías, que representaban casi la totalidad del dataset cómo se puede ver en el siguiente gráfico:
 
 ![Datos nulos dentro del dataframe steam_games EDA](img/EDA_steam_games_1.png)
 
@@ -216,10 +216,25 @@ Esa y otras cosas más interesantes se pueden encontrar dentro del archivo en el
 
 ---
 ## EDA - User_items
-Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_items.ipynb,](EDA/EDA_user_items.ipynb) en el mismo presenté gráficos para visualizar mejor la información proporcionada por los datos.
+
+También realicé el proceso de EDA al conjunto de datos correspondiente a user_items, cómo curiosidad, no había datos nulos en este conjunto de datos. 
+
+Identifiqué cuales fueron los juegos más jugados por los usuarios:
+![Juegos más jugados por los usuarios](img/EDA_user_items_1.png)
+
+Gracias a esta gráfica y algunas conclusiones propias (las cuáles podes leer con más detalle en el archivo [EDA_user_items.ipynb](EDA/EDA_user_items.ipynb)), determiné que el tiempo está (muy posiblemente, porque a ciencia cierta no lo sé) medido en minutos. Observemos la cantidad de tiempo invertida por el top 10 más frikis de Steam (lo de frikis va con amor xD):
+
+![Tiempo invertido por los top 10 más frikis de Steam](img/EDA_user_items_2.png)
+
+Podemos ver que el primero, con user_id: "REBAS_AS_F-T", acumula un total de 4660393 (cuatro millones seiscientos sesenta mil trescientos noventa y tres) en playtime_forever. Si fuesen horas, dividiendo por 24 para obtener la cantidad de días obtendríamos un poco más de 194183, si a este número lo dividimos por 365 para obtener la cantidad de años jugados por el usuario, obtenemos un poco más de 532 años.
+Me imagino que la mayoría estaremos de acuerdo que ese tal Rebas se vería algo así:
+![Rebas](img/EDA_user_items_3.png)
+
+Pero bueno, cómo biologicamente por ahora no es posible vivir hasta los 532 años, consideré que la unidad de tiempo podría estar en minutos en lugar de horas, entonces la formula sería algo así: 4660393 / 60 = Horas jugadas = 776973.22, si a ese número lo dividimos por 24 para obtener los días nos queda: Días jugados = 3236.38, y si a ese número lo dividimos por 365 tenemos que ese usuario pasó un poco más de 8.8 años de su vida jugando videojuegos. Vemos que es sensato pensar que la unidad de tiempo está medida en minutos. Incluso quizás podrían ser segundos, pero para mi análisis consideré que eran minutos. 
 
 ---
 ## EDA - User_reviews
+
 Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_reviews.ipynb,](EDA/EDA_user_reviews.ipynb) en el mismo presenté gráficos para visualizar mejor la información proporcionada por los datos.
 
 ---
