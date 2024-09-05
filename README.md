@@ -235,6 +235,25 @@ Pero bueno, cómo biologicamente por ahora no es posible vivir hasta los 532 añ
 ---
 ## EDA - User_reviews
 
+Finalmente, le toca el turno al conjunto de datos correspondiente a user_reviews.
+Una de las cosas más importantes al momento de hacer un EDA es ver la cantidad de nulos que hay dentro de la tabla que se está analizando, y esto es lo que representé mediante la siguiente gráfica, muy similar a la usada en steam_games, me gustó el formato.
+
+![Datos nulos dentro del dataframe user_reviews EDA](img/EDA_user_reviews_1.png)
+
+La columna "funny" y "last_edited" llaman particularmente la antención por la cantidad de nulos que contienen. Por un lado, la columna "funny" da información de la cantidad de personas que esa reseña en cuestión les resultó graciosa. Al haber tanta cantidad de nulos, podemos concluir que no todas las reseñas le resultaron graciosas a las personas que las leyeron (muchas, probablemente ni siquiera hayan sido leídas 😭). Por otro lado, algo similar  sucedía con la columna "last_edited", ya que la misma informaba acerca de la fecha en la que se hizo la última edición de la reseña en cuestión. Y tiene sentido pensar que no todas las reseñas fueron editadas luego de su creación (y de hecho, la mayoría de ellas no lo fueron).
+
+Por otro lado, la reseña que los usuarios encontraron más divertida fué la siguiente: "This game is:10% luck,20% skill,15% concentrated power of will,5% pleasure,50% pain,100% reason to purchase the game." (Este juego es:10% suerte, 20% habilidad,15% poder de la voluntad concentrado,5% placer, 50% dolor,100% razón para comprar el juego).
+
+Por otro lado, cómo podemos observar en la siguiente gráfica:
+
+![Recomendaciones de juegos](img/EDA_user_reviews_2.png)
+
+La mayor parte de los usuarios que hicieron una reseña fué para recomendar el juego en cuestión (88,5%).
+
+Podemos ver también una evolución temporal de las reseñas a lo largo del tiempo:
+
+![Evolución temporal reseñas](img/EDA_user_reviews_3.png)
+
 Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_reviews.ipynb,](EDA/EDA_user_reviews.ipynb) en el mismo presenté gráficos para visualizar mejor la información proporcionada por los datos.
 
 ---
