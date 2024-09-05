@@ -194,7 +194,25 @@ Básicamente el proceso de EDA es un proceso inicial que idealmente debería hac
 ---
 ## EDA - Steam_games
 Este fué el primer conjunto de datos al cuál le apliqué el proceso de EDA.
-Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_steam_games.ipynb,](EDA/EDA_steam_games.ipynb) en el mismo identifiqué datos nulos, borré las columnas que no consideré óptimas para el desarrollo de los endpoints y de los sistemas de recomendación y presenté algunos gráficos para visualizar mejor la información.
+De forma muy breve y resumida (todos los procedimientos hechos se pueden encontrar en el archivo [EDA_steam_games.ipynb,](EDA/EDA_steam_games.ipynb)) identifiqué y traté los datos nulos, principalmente eran filas completamente vacías, que representaban casi la totalidad del dataset cómo se puede ver en el siguiente gráfico:
+
+![Datos nulos dentro del dataframe steam_games EDA](img/EDA_steam_games_1.png)
+
+También borré las columnas que no consideré óptimas para el desarrollo de los endpoints y de los sistemas de recomendación y presenté algunos gráficos para visualizar mejor la información. Dejando las que se muestran a continuación:
+
+![Columnas que no fueron eliminadas en el EDA de steam_games](img/EDA_steam_games_2.png)
+
+Y de estas mismas columnas, terminé borrando ciertas filas, "cortando" el dataframe a la altura de la línea roja:
+
+![Tamaño final del Dataframe steam_games post eliminación EDA](img/EDA_steam_games_3.png)
+
+Otra de los inconvenientes con los cuáles me encontré, fué que este Dataframe tenía una columna correspondiente a los precios de los videojuegos. El problema con esta columna fué que no eran valores númericos cómo uno esperaría, sino que eran valores object, cómo podemos ver a continuación:
+
+![Columna price del dataframe steam_games](img/EDA_steam_games_4.png)
+
+Esto me traía inconvenientes que rápidamente solucioné, mediante la transformación de aquellas celdas que decían "Free" o "Free to play" al equivalente númerico: 0
+
+Esa y otras cosas más interesantes se pueden encontrar dentro del archivo en el cuál hice el proceso de EDA al conjunto de datos correspondiente a steam_games. Estas transformaciones me sirvieron muchísimo para el desarrollo del primer [endpoint.](#endpoints)
 
 ---
 ## EDA - User_items
