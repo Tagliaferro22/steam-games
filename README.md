@@ -282,11 +282,18 @@ Cómo vemos, el usuario (la persona que interactúa con la interfaz) hace un ped
 Con esto un poco más claro, veamos ahora la definición de un endpoint
 
 ### Endpoints - Introducción - Definición de endpoint
- En [CLOUDFARE](https://www.cloudflare.com/es-es/learning/security/api/what-is-api-endpoint/) encontré esta respuesta: "
+
+Anteriormente dije que para saber que es un endpoint, primero debíamos saber que era una API, y ahora entenderan por qué. En [CLOUDFARE](https://www.cloudflare.com/es-es/learning/security/api/what-is-api-endpoint/) encontré esta respuesta a la definición de endpoint: "Si Alice y Bob están hablando por teléfono, las palabras de Alice se dirigen a Bob y viceversa. Alice dirige sus palabras al 'punto final' (endpoint) de la conversación: Bob.
+
+Alice: "Hola, Bob" ----------> Bob
+
+Del mismo modo, una integración de API es como una conversación. Pero en lugar de decir 'Hola', un cliente de API dice algo como 'Necesito algunos datos' al servidor de la API a través de una llamada API. El punto final (endpoint) del servidor de la API responde 'Aquí están los datos' - respuesta de la API. Los puntos finales (endpoints) de la API no son entidades físicas como Alice y Bob. Existen en el software, no en el hardware."
+
+Para este proyecto me pidieron que cree y desarrolle 5 endpoints funcionales, cada uno con sus respectivas útilidades, los cuáles se listan y explican a continuación.
 
 ## Endpoints - Primero
 
-- Primer endpoint: Para la función correspondiente al primer endpoint, la consigna era la siguiente:
+Para la función correspondiente al primer endpoint, la consigna era la siguiente:
 
 ![data_science](img/endpoint_1.png)
 
