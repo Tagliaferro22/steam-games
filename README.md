@@ -316,6 +316,33 @@ Vemos en este ejemplo que la desarrolladora de vídeojuegos "ebi-hime" en 2015 s
 Te invito a probar este endpoint y los demás con este [archivo,](endpoints/parametros_validos_endpoints.txt) el cuál contiene todos los parametros válidos para los 5 endpoints.
 
 ## Endpoints - Segundo
+
+Para la función correspondiente al segundo endpoint, la consigna era la siguiente:
+
+![data_science](img/endpoint_2.png)
+
+Todo el desarrollo con detalle correspondiente a este endpoint se puede encontrar en este [archivo,](endpoints/endpoint_2.ipynb) más a continuación voy a explicar de forma muy breve y resumida que fué lo que hice para el desarrollo del mismo.
+
+Para desarrollar este endpoint, tuve que utilizar los 3 conjuntos de datos. Primeramente el de user_items, ya que lo que se ingresaba a la función era la ID del usuario, y una de las cosas que se pretendía saber con este endpoint era la cantidad de items (videojuegos) que tenía el usuario. Si recordamos, el archivo original de user_items contenía una columna llamada items_count, esta columna fué mi salvación en este endpoint, ya que me permitió optimizar enormemente el mismo. ¿Por qué? Porque la tabla original de user_items tenía 88310 filas, y la tabla desanidada me había quedado con 5153209 filas. 
+
+Por otro lado, también necesitaba el conjunto de datos correspondiente a steam_games, ya que la función también tenía que devolver la cantidad de dinero gastado, y para obtener este valor, tuve que conectar ambas tablas [por un lado la tabla de user_items desanidada, la cuál tenía información de cada juego (o más bien, su correspondiente ID) que tenía el usuario, y por el otro la tabla de steam_games, la cuál tenía información de los precios de dichos juegos] usando el ID de los juegos.
+
+Una parte de la tabla resultante se veía así:
+
+![Merge entre user_items y steam_games](img/endpoints_segundo_1.png)
+
+A partir de esta conexión (merge), pude hacer una sumatoria del precio para obtener la cantidad total de dinero gastado por el usuario. Pero nuevamente volvía a tener el mismo problema de la cantidad de filas, lo cuál era muy demandante a nivel computo, y llenaba la memoria que Render ofrece en su capa gratuita, por lo cuál, decidí crear una tabla a partir de esta misma, que tenía sólo el nombre de usuario y el total de dinero gastado por el mismo. Cómo curiosidad, tardó 3 horas en recorrerse el bucle que hizo posible esto, y una parte del resultado se veía así:
+
+![Usuario | Dinero gastado tabla](img/endpoints_segundo_2.png)
+
+Pasando con esta transformación de más de 5000000 de filas a menos de 70000.
+
+Por último, en esta función también me pedían que devuelva el porcentaje de recomendación, y ese dato estaba disponible en la otra tabla, user_reviews. Lo que hice fué usar una regla de 3 simple, a partir de la cantidad total de juegos del usuario (la cuál determiné cómo 100%), supongamos 277 cómo el primer usuario, conté la cantidad de recomendaciones que hizo el usuario en la tabla user_reviews. Suponiendo que hubiese hecho 28, tendría un porcentaje de recomendación del 10%.
+
+Finalmente la salida en el desarrollo del prototipo se veía así:
+
+![Salida en el Jupyter Notebook del segundo endpoint](img/endpoints_segundo_3.png)
+
 ## Endpoints - Tercero
 ## Endpoints - Cuarto
 ## Endpoints - Quinto
