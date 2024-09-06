@@ -344,6 +344,31 @@ Finalmente la salida en el desarrollo del prototipo se veía así:
 ![Salida en el Jupyter Notebook del segundo endpoint](img/endpoints_segundo_3.png)
 
 ## Endpoints - Tercero
+
+Para la función correspondiente al tercer endpoint, la consigna era la siguiente:
+
+![data_science](img/endpoint_3.png)
+
+Para el desarrollo del mismo, tuve que utilizar 2 conjuntos de datos, por un lado el de user_items; para determinar el ID del usuario, de los juegos que tiene ese usuario y de las horas de acumula: y por el otro el de steam_games, para determinar tanto el genero de los juegos que tiene el usuario ingresado en la función.
+
+Nuevamente reitero, todo el procedimiento con lujo de detalles se puede encontrar en este [archivo,](endpoints/endpoint_3.ipynb) en el cuál desarrollé paso a paso todos los prototipos necesarios hasta llegar al resultado deseado, lo que explico a continuación es un breve resumen de ese archivo.
+
+Originalmente, una parte de la tabla steam_games se veía así:
+
+![Tabla de steam_games original](img/endpoints_tercero_1.png)
+
+Lo más útil de esta tabla era la columna "genres", la cuál me servía para determinar el genero del juego en cuestión, el problema era que, dadas las condiciones en las que venía originalmente esta columna, no podía filtrar por un genero dado, por ejemplo, "Action", ya que el mismo se encontraba en una lista dentro de cada celda. Este problema se solucionó facilmente con el método .explode de pandas, que me permitió transformar el Dataframe para tenerlo de la siguiente manera:
+
+![Metodo explode de pandas](img/endpoints_tercero_2.png)
+
+Si bien esta transformación me aumentó aproximadamente un 246.8% el Dataframe original, luego de la misma, me era mucho más fácil filtrar por genero de vídeojuego. Cómo podemos ver a continuación, en dónde por ejemplo del genero "Casual" tenemos 6283 juegos (se vé abajo, en dónde indica la cantidad de filas).
+
+![Vistazo a los videojuegos del genero Casual](img/endpoints_tercero_3.png)
+
+El problema mayor vino cuando traté de conectar tanto la tabla de user_items cómo la tabla con la cuál me resultaba más sencillo filtrar a los videojuegos por su respectivo genero. Esta conexión (merge) resultó en la monstruosidad que muestro a continuación:
+
+![Bob Esponja que es eso](img/bob-esponja-que-es-eso.gif)
+
 ## Endpoints - Cuarto
 ## Endpoints - Quinto
 
