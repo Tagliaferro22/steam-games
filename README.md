@@ -256,12 +256,35 @@ Podemos ver también una evolución temporal de las reseñas a lo largo del tiem
 
 Está, y mucha otra información, además de todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_reviews.ipynb.](EDA/EDA_user_reviews.ipynb)
 
-Con todo lo anterior dicho, podemos proseguir a la parte de la creación y desarrollo de los endpoints 
+Con todo lo anterior dicho, podemos proseguir a la parte de la creación y desarrollo de los endpoints.
 
 ---
 ---
 
 #  Endpoints 
+
+## Endpoints - Introducción
+
+### Endpoints - Introducción - Definición de API
+
+Cómo hice con las anteriores secciones, me parece necesario hacerla también con esta sección, empezaremos entonces definiendo, ¿Qué es un endpoint? Pero para entender que es un endpoint, primero tenemos que entender ¿Qué es una API? Según [CLOUDFARE,](https://www.cloudflare.com/es-es/learning/security/api/what-is-an-api/) "Una interfaz de programación de aplicaciones (API) es un conjunto de reglas que permiten que un programa transmita datos a otro programa.", y continúa con: "Las API permiten a los desarrolladores evitar el trabajo redundante; en lugar de construir y reconstruir funciones de aplicaciones que ya existen, los desarrolladores pueden incorporar las existentes a su nueva aplicación al formatear las solicitudes como requiere la API.
+
+Una API es una "interfaz", es decir, una forma de que una cosa interactúe con otra. Si utilizamos un ejemplo del mundo real, un cajero automático tiene una interfaz, una pantalla y varios botones, que permite que los clientes interactúen con su banco y soliciten servicios, como sacar dinero. Del mismo modo, una API es la forma en que una pieza de software interactúa con otro programa para obtener los servicios necesarios.".
+
+Otra cosa que dice: "Imaginemos que Jennifer diseña un sitio web que ayuda a los viajeros a comprobar el tráfico de las autovías antes de salir a trabajar. Jennifer podría dedicar mucho tiempo y dinero a crear un complejo sistema de seguimiento de las autovías para ofrecer esta información a los usuarios de su sitio web. Pero estas funciones ya existen, ya que otros han creado estos sistemas. En lugar de reinventar la rueda, el sitio web de Jennifer utiliza una API que ofrece un servicio externo de seguimiento de autovías. Ahora, Jennifer puede centrarse en diseñar otros aspectos del sitio web."
+
+La imagen que vemos a continuación describe muy bien cómo funcionan las API REST
+
+![API REST imagen descriptiva](img/endpoints_introduccion_1.png)
+
+Cómo vemos, el usuario (la persona que interactúa con la interfaz) hace un pedido (eso de GET, POST, etc) y la API lo que devuelve es un JSON o un XML.
+
+Con esto un poco más claro, veamos ahora la definición de un endpoint
+
+### Endpoints - Introducción - Definición de endpoint
+ En [CLOUDFARE](https://www.cloudflare.com/es-es/learning/security/api/what-is-api-endpoint/) encontré esta respuesta: "
+
+## Endpoints - Primero
 
 - Primer endpoint: Para la función correspondiente al primer endpoint, la consigna era la siguiente:
 
@@ -282,10 +305,19 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
         }
 
 
+## Endpoints - Segundo
+## Endpoints - Tercero
+## Endpoints - Cuarto
+## Endpoints - Quinto
+
 ---
 ---
 
-# Sistemas de recomendacion
+# Sistemas de recomendación
+
+## Sistemas de recomendación - Introducción
+
+## Sistemas de recomendación - Primero
 
 Primero aclaro que, la palabra recomendación no tiene acento en el título porque si lo ponía no me dejaba agregar la funcionalidad de que, al hacer click te redirija a esta parte del README. 
 
@@ -300,6 +332,8 @@ Para el sistema de recomendación, la consigna era la siguiente:
 ![data_science](img/modeloML.png)
 
 Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
+
+## Sistemas de recomendación - Segundo
 
 ---
 ---
