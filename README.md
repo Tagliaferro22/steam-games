@@ -254,7 +254,9 @@ Podemos ver también una evolución temporal de las reseñas a lo largo del tiem
 
 ![Evolución temporal reseñas](img/EDA_user_reviews_3.png)
 
-Todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_reviews.ipynb,](EDA/EDA_user_reviews.ipynb) en el mismo presenté gráficos para visualizar mejor la información proporcionada por los datos.
+Está, y mucha otra información, además de todos los procedimientos hechos se pueden encontrar en el archivo [EDA_user_reviews.ipynb.](EDA/EDA_user_reviews.ipynb)
+
+Con todo lo anterior dicho, podemos proseguir a la parte de la creación y desarrollo de los endpoints 
 
 ---
 ---
