@@ -297,6 +297,24 @@ Para la función correspondiente al primer endpoint, la consigna era la siguient
 
 ![data_science](img/endpoint_1.png)
 
+Para el desarrollo de este primer endpoint, utilicé unicamente el conjunto de datos llamado "steam_games", ya que ese conjunto de datos me ofrecía toda la información necesaria para el desarrollo del mismo. 
+
+Lo principal que tuve que hacer fué limpiar y transformar el conjunto de datos, para dejarlo de la forma más óptima posible. 
+
+La mayor parte del desarrollo de este endpoint se puede encontrar en el archivo correspondiente al [EDA,](EDA/EDA_steam_games.ipynb) y aunque también una parte de la explicación se encuentra en el archivo que corresponde al [endpoint,](endpoints/endpoint_1.ipynb) prácticamente ya lo tenía hecho antes de crear el archivo, y la creación de este mismo fué a modo de justificación (ya que lo había hecho con todos los demás endpoints, excepto con este) 
+
+Un ejemplo de la salida sería esta (primero hay que oprimir el botón "Try it out"):
+
+![Primer endpoint, funcionalidad](img/endpoints_primero_1.png)
+
+Luego de tocar ese botón, aparece abajo un nuevo botón celeste que dice "Execute", cuando ese botón se oprime, se muestra el resultado (se puede ver dónde dice: "Response body"):
+
+![Primer endpoint, funcionalidad](img/endpoints_primero_2.png)
+
+Vemos en este ejemplo que la desarrolladora de vídeojuegos "ebi-hime" en 2015 sacó 1 juego y no era gratuito, en 2016 sacó 5 juegos y tuvo un 20% de juegos gratuitos, etc.
+
+Te
+
 Entonces desarrolle una función que hace lo siguiente: Primero, evalúa si el desarrollador ingresado en la función existe en el dataset, si no existe, lanza el siguiente error: "Developer not found". Si el desarrollador si existe en el dataset, la función ingresa en un bucle que itera sobre cada año de manera única en los que el desarrollador sacó al menos un videojuego. 
 Por ejemplo, si en 2015 sacó 3 juegos, en 2016 sacó 2 y en 2017 sacó 4, esos años aparecen 3, 2 y 4 veces respectivamente, por lo cuál, lo que hace el bucle es tomar esos años cómo valores únicos, apareciendo sólo una vez el 2015, el 2016 y el 2017.
 
@@ -324,8 +342,6 @@ Estos dos valores se almacenan en una variable llamada "pre_salida", que es un d
 
 ## Sistemas de recomendación - Introducción
 
-## Sistemas de recomendación - Primero
-
 Primero aclaro que, la palabra recomendación no tiene acento en el título porque si lo ponía no me dejaba agregar la funcionalidad de que, al hacer click te redirija a esta parte del README. 
 
 Habiendo dejado eso en claro, empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
@@ -334,7 +350,9 @@ Según [Aprende machine learning . com](https://www.aprendemachinelearning.com/s
 Estamos rodeados de sistemas de recomendación, en Instagram por ejemplo, cuando comenzamos a ver reels, y hacemos "scroll" (deslizar para ver el siguiente contenido), el próximo vídeo que nos aparezca, es aquel que el algoritmo de Instagram nos ha recomendado.
 En YouTube, cuando estamos viendo un video y nos aparece un "recomendado" o "para tí" es exactamente lo mismo. 
 
-Para el sistema de recomendación, la consigna era la siguiente:
+## Sistemas de recomendación - Primero
+
+Para el primer sistema de recomendación, la consigna era la siguiente:
 
 ![data_science](img/modeloML.png)
 
