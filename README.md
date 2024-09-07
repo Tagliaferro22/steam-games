@@ -380,6 +380,43 @@ Lógicamente y cómo era de esperar, en Render esta gran tabla me daba errores d
 Este y todos los demás procedimientos se pueden encontrar en este [archivo,](endpoints/endpoint_3.ipynb) en dónde muestro en más detalle todos los pasos tomados para llegar al resultado deseado.
 
 ## Endpoints - Cuarto
+
+Para la función correspondiente al cuarto endpoint, la consigna era la siguiente:
+
+![data_science](img/endpoint_4.png)
+
+Para el desarrollo del mismo, sólo necesitaba usar 2 tablas. Por un lado; necesitaba la tabla de reseñas, para saber primero en que año habían hecho la reseña, y también que juego habían recomendado (recommend = True); y por el otro la tabla de juegos, porque en la tabla de reseñas sólo tenía disponible el ID del juego, y necesitaba saber que desarrolladora de videojuegos lo había desarrollado, para saber a quién le correspondía dicha reseña.
+
+Originalmente, la cabecera de la tabla de reseñas se veía así:
+
+![Cabecera de la tabla de reseñas](img/endpoints_cuarto_1.png)
+
+De las 8 columnas que tenía originalmente, me terminé quedando sólo con las 4 que se muestran a continuación:
+
+![Tabla de reseñas luego de eliminar columnas innecesarias](img/endpoints_cuarto_3.png)
+
+La primera de ellas me ofrecía la información acerca del año en el cuál fué publicada la reseña, la segunda el ID del juego, con el cuál podía conectar ambas tablas, la tercera era si recomendaban el juego o no, y la cuarta era la reseña en sí.
+
+Por otra parte, originalmente, la cabecera de la tabla de juegos se veía así:
+
+![Cabecera de la tabla de juegos](img/endpoints_cuarto_2.png)
+
+Y de las 8 columnas que traía la tabla originalmente, me terminé quedando sólo con las 2 que se muestran a continuación:
+
+![Tabla de juegos luego de eliminar columnas innecesarias](img/endpoints_cuarto_4.png)
+
+La primera me permitía conectar ambas tablas y la segunda me ofrecía la información de que desarrollador sacó el juego con ese determinado ID.
+
+Luego de hacer un merge entre ambas tablas, la tabla resultante se veía de la siguiente manera:
+
+![Tabla resultante luego de merge entre tabla juegos y tabla reseñas](img/endpoints_cuarto_5.png)
+
+Había algunos valores nulos que tuve que borrar para que la función dé el resultado más óptimo posible, lo cuál está explicado con más detalle en este [archivo.](endpoints/endpoint_4.ipynb)
+
+Para finalizar, la salida de la función en local se veía así:
+
+![Salida de la función, endpoint correctamente funcional](img/endpoints_cuarto_6.png)
+
 ## Endpoints - Quinto
 
 ---
