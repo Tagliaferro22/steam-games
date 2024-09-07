@@ -365,9 +365,19 @@ Si bien esta transformación me aumentó aproximadamente un 246.8% el Dataframe 
 
 ![Vistazo a los videojuegos del genero Casual](img/endpoints_tercero_3.png)
 
-El problema mayor vino cuando traté de conectar tanto la tabla de user_items cómo la tabla con la cuál me resultaba más sencillo filtrar a los videojuegos por su respectivo genero. Esta conexión (merge) resultó en la monstruosidad que muestro a continuación:
+El problema mayor vino cuando traté de conectar tanto la tabla de user_items cómo la tabla de steam_games, y esto era necesario para filtrar a los videojuegos por su respectivo genero, y a su vez, para determinar que usuarios jugaron a ese genero y las horas acumuladas en el mismo. Esta conexión (merge) resultó en la monstruosidad que muestro a continuación:
+
+![Tabla monstruosa](img/endpoints_tercero_4.png)
+
+Lo bueno de este merge fué que la tabla resultante me daba información cómo se ve en la imagen (de izquierda a derecha, sólo lo útil para el endpoint) del genero, del año de salida, de las horas acumuladas y del nombre de usuario. Esto era todo lo que me pedían tanto cómo entrada cómo para la salida del endpoint.
+
+Lo malo fueron la cantidad de filas resultantes de ese merge, más de 9,5 millones de filas. Mi honesta reacción: 
 
 ![Bob Esponja que es eso](img/bob-esponja-que-es-eso.gif)
+
+Lógicamente y cómo era de esperar, en Render esta gran tabla me daba errores de memoria, los cuáles decidí solucionar de la siguiente manera: en lugar de tener una gran tabla con todos los generos, cree una tabla para cada genero, y la exporté cómo una tabla individual. A partir de este cambio, cuando se hacía el llamado a la función, no iba a traer a toda la tabla, sino que sólo iba a traer a la parte de la tabla correspondiente al genero en cuestión. Con esta transformación, me quedaron 21 tablas en total. Según el genero ingresado, se carga una u otra tabla.
+
+Este y todos los demás procedimientos se pueden encontrar en este [archivo,](endpoints/endpoint_3.ipynb) en dónde muestro en más detalle todos los pasos tomados para llegar al resultado deseado.
 
 ## Endpoints - Cuarto
 ## Endpoints - Quinto
