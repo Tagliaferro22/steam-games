@@ -419,6 +419,42 @@ Para finalizar, la salida de la función en local se veía así:
 
 ## Endpoints - Quinto
 
+Para la función correspondiente al quinto endpoint, la consigna era la siguiente:
+
+![data_science](img/endpoint_5.png)
+
+Para el desarrollo del mismo, lo dividí en dos partes para no tener un sólo archivo demasiado extenso. En la [primera parte](endpoints/endpoint_5_1.ipynb) lo que hice fué usar un modelo de PLN (Procesamiento de lenguaje natural) para analizar el sentimiento de cada una de las reseñas que tenía disponibles en la tabla de reseñas. Asignandoles un 0 si eran negativas, un 1 si eran neutras y un 2 sí eran positivas. El problema era que no todas las reseñas eran igual de extensas (había unas más largas que otras), y tenía una cantidad total de 59305 reseñas. Esto llevó a que el modelo se demore unas cuantas horas en determinar para cada reseña, si se trataba de una negativa, neutra o positiva, en concreto se demoró:
+
+![Tiempo que tardó el modelo en determinar la cualidad de las reseñas](img/endpoints_quinto_1.png)
+
+12 horas, 1 minuto y 9 segundos. Tuve que dejar la computadora prendida toda la noche con el modelo ejecutandose, honestamente tenía miedo de que se me prenda fuego.
+
+![Computadora prendida fuego](img/endpoints_quinto_2.webp)
+
+Pero bueno, por suerte eso no sucedió. 
+
+Continuando, una vez que ya tenía la cualidad de cada reseña (si se trataba de una negativa, neutra o positiva), lo que hice fué guardar esa nueva tabla para usarla en la [segunda parte.](endpoints/endpoint_5_2.ipynb) En esta segunda parte, además de la tabla de reseñas, también usé la tabla de juegos cómo en el cuarto endpoint, ya que en esa tabla tenía la información acerca de qué desarrollador sacó determinado juego con determinada ID.
+
+En la tabla de juegos, nuevamente las únicas dos columnas que me servían eran las siguientes:
+
+![Tabla de juegos con las columnas necesarias](img/endpoints_cuarto_4.png)
+
+Por un lado el ID del juego me servía para conectar ambas tablas, y por el otro, el desarrollador me servía para saber a qué desarrollador le habían hecho la reseña negativa, neutra o positiva.
+
+Por otro lado, en la tabla de reseñas, me quedé con estas columnas:
+
+![Tabla de reseñas con las columnas necesarias](img/endpoints_quinto_2.png)
+
+El ID me servía para conectar ambas tablas, y el puntaje para determinar la cualidad de las reseñas. (0 = Negativa, 1 = Neutra,  2 = Positiva)
+
+Luego de un par de pruebas, me decidí para que la salida final se viese así:
+
+![Salida del quinto endpoint](img/endpoints_quinto_3.png)
+
+Lo cuál ofrece más información de la que me pidieron, pero me pareció útil y necesario, por eso decidí que esa sea la salida de la función
+
+Sin nada más que decir acerca de los endpoints, continuemos ahora con los sistemas de recomendación!
+
 ---
 ---
 
