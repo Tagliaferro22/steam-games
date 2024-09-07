@@ -462,13 +462,13 @@ Sin nada más que decir acerca de los endpoints, continuemos ahora con los siste
 
 ## Sistemas de recomendación - Introducción
 
-Primero aclaro que, la palabra recomendación no tiene acento en el título porque si lo ponía no me dejaba agregar la funcionalidad de que, al hacer click te redirija a esta parte del README. 
-
-Habiendo dejado eso en claro, empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
+Empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
 Según [Aprende machine learning . com](https://www.aprendemachinelearning.com/sistemas-de-recomendacion/)
 "...son algoritmos que intentan 'predecir' los siguientes ítems (en nuestro proyecto, juegos) que querrá adquirir un usuario en particular."
 Estamos rodeados de sistemas de recomendación, en Instagram por ejemplo, cuando comenzamos a ver reels, y hacemos "scroll" (deslizar para ver el siguiente contenido), el próximo vídeo que nos aparezca, es aquel que el algoritmo de Instagram nos ha recomendado.
-En YouTube, cuando estamos viendo un video y nos aparece un "recomendado" o "para tí" es exactamente lo mismo. 
+En YouTube, cuando estamos viendo un video y nos aparece un "recomendado" o "para tí" es exactamente lo mismo. La lógica que funciona por detrás es un algoritmo que predice que es lo próximo que podría interesarte.
+
+Durante este proyecto, me pedían que desarrolle dos sistemas de recomendación con dos lógicas diferentes, pero a la vez, complementarias entre sí.
 
 ## Sistemas de recomendación - Primero
 
