@@ -465,6 +465,7 @@ Sin nada más que decir acerca de los endpoints, continuemos ahora con los siste
 Empecemos por lo básico, respondiendo a la siguiente pregunta, ¿Qué es un sistema de recomendación?
 Según [Aprende machine learning . com](https://www.aprendemachinelearning.com/sistemas-de-recomendacion/)
 "...son algoritmos que intentan 'predecir' los siguientes ítems (en nuestro proyecto, juegos) que querrá adquirir un usuario en particular."
+
 Estamos rodeados de sistemas de recomendación, en Instagram por ejemplo, cuando comenzamos a ver reels, y hacemos "scroll" (deslizar para ver el siguiente contenido), el próximo vídeo que nos aparezca, es aquel que el algoritmo de Instagram nos ha recomendado.
 En YouTube, cuando estamos viendo un video y nos aparece un "recomendado" o "para tí" es exactamente lo mismo. La lógica que funciona por detrás es un algoritmo que predice que es lo próximo que podría interesarte.
 
@@ -474,9 +475,23 @@ Durante este proyecto, me pedían que desarrolle dos sistemas de recomendación 
 
 Para el primer sistema de recomendación, la consigna era la siguiente:
 
-![data_science](img/modeloML.png)
+![Consigna del sistema de recomendación](img/modeloML.png)
 
-Lo que decidí hacer fué usar una columna que había agregado en el dataset de juegos, llamada "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs", usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
+Para este sistema de recomendación, sólo usé la tabla de juegos, ya que era la única que necesitaba. Ingresar el ID de un juego y obtener el resultado correspondiente era bastante sencillo, de hecho, con sólo aplicar una máscara de pandas ya cumplía con ese objetivo. El inconveniente era encontrar 5 juegos similares a ese juego ingresado...
+
+Si recordamos, originalmente la cabecera de la tabla de juegos se veía de la siguiente forma:
+
+![Tabla de juegos original](img/steam_games_cabecera.png)
+
+A partir de esta tabla, tenía 3 columnas que me eran útiles para determinar que juegos eran similares a otros. Por un lado, tenía la columna "genres", la cuál cómo su mismo nombre indica, ofrece información acerca de los generos del juego en cuestión. Por otro lado, también tenía la columna "tags", la cuál indicaba algo similar, las etiquetas del juego. Y por último, también tenía la columna "specs" que indicaba aspectos del juego.
+
+Lo que hice a partir de estas 3 columnas, fué unirlas en una 4ta columna que decidí nombrar "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs".
+
+
+
+![Explicación informal del algoritmo de similitud del coseno](img/sistema_recomendacion_primero_1.png)
+
+ , usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
 
 ## Sistemas de recomendación - Segundo
 
