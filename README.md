@@ -487,7 +487,7 @@ A partir de esta tabla, tenía 3 columnas que me eran útiles para determinar qu
 
 Lo que hice a partir de estas 3 columnas, fué unirlas en una 4ta columna que decidí nombrar "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs".
 
-
+.
 
 ![Explicación informal del algoritmo de similitud del coseno](img/sistema_recomendacion_primero_1.png)
 
