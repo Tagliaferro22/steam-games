@@ -487,11 +487,13 @@ A partir de esta tabla, tenía 3 columnas que me eran útiles para determinar qu
 
 Lo que hice a partir de estas 3 columnas, fué unirlas en una 4ta columna que decidí nombrar "categorical", en ella se alojaban todos los datos pertinentes al juego "tags", "genres" y "specs".
 
-.
+Esto me resultó en una columna que alojaba la descripción completa del juego, y en base a la misma, comparé que tan similares eran los juegos entre sí, usando el algoritmo de similitud del coseno.
+
+De manera muy simplificada e informal, El algoritmo de similitud del coseno funciona de la siguiente manera:
 
 ![Explicación informal del algoritmo de similitud del coseno](img/sistema_recomendacion_primero_1.png)
 
- , usando scikit-learn, vectoricé esa columna y a partir de esa vectorización, utilicé el algoritmo de similitud del coseno. El cuál de lo que se encarga (de forma simple y muy resumida) es de encontrar palabras similares a las del juego ingresado. Por ejemplo, ingresamos el id de cierto juego que sabemos que es de acción, lo que hace ese algoritmo (nuevamente recalco, de forma simple y muy resumida) es buscar otros juegos que también sean de acción y de tematicas similares. Para nosotros quizás resulte simple saber que por ejemplo el Counter Strike es similar al Call of Duty (dos juegos de disparos), pero para un algoritmo que sólo entiende números no, es por eso que el proceso de ETL previamente realizado era de suma importancia para crear esa columna artificial llamada "categorical" y buscar los juegos a partir de allí.
+En matemáticas existen los vectores, que son objetos geometricos que tienen magnitud y dirección. En este proyecto, los vectores serían las celdas de la columna "categorical", y según que tan "cerca" estaban estos vectores (el ángulo alfa que se ve en rojo), los juegos eran más similares o no. 
 
 ## Sistemas de recomendación - Segundo
 
