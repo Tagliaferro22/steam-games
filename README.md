@@ -524,5 +524,6 @@ Toda la explicación técnica para la creación de tablas y su respectiva justif
 
 # Conclusión y cierre
 
-Cómo conclusión y cierre, se podría terminar de hacer las otras funciones para que el trabajo quede completamente realizado, y terminar de especificar los detalles que requieren ciertas columnas, cómo por ejemplo, el tiempo de juego de un usuario, que no se sabe si está medido en horas, minutos o segundos, y es un dato bastante relevante.
-Saludos y muchas gracias.
+Cómo conclusión y cierre, se podría escalar este proyecto añadiendo más datos, por ejemplo, conectandolo a una base de datos, para que se puedan añadir a la misma tanto nuevos juegos cómo nuevos usuarios. Sería bueno también contar con información acerca de en qué unidad de tiempo están medidas las columnas "playtime_forever" y "playtime_2weeks".
+
+Espero que mi explicación haya sido clara. ¡Saludos y que tengas un excelente día!
