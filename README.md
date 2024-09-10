@@ -477,6 +477,8 @@ Para el primer sistema de recomendación, la consigna era la siguiente:
 
 ![Consigna del sistema de recomendación](img/modeloML.png)
 
+![Explicación informal del sistema de recomendación](img/item-based.jpg)
+
 Para este sistema de recomendación, sólo usé la tabla de juegos, ya que era la única que necesitaba. Ingresar el ID de un juego y obtener el resultado correspondiente era bastante sencillo, de hecho, con sólo aplicar una máscara de pandas ya cumplía con ese objetivo. El inconveniente era encontrar 5 juegos similares a ese juego ingresado...
 
 Si recordamos, originalmente la cabecera de la tabla de juegos se veía de la siguiente forma:
@@ -495,7 +497,27 @@ De manera muy simplificada e informal, El algoritmo de similitud del coseno func
 
 En matemáticas existen los vectores, que son objetos geometricos que tienen magnitud y dirección. En este proyecto, los vectores serían las celdas de la columna "categorical", y según que tan "cerca" estaban estos vectores (el ángulo alfa que se ve en rojo), los juegos eran más similares o no. 
 
+Todo el desarrollo y la explicación más tecnica de este sistema de recomendación lo podés encontrar en este [archivo.](sistema_recomendacion/item_item.ipynb)
+
 ## Sistemas de recomendación - Segundo
+
+Para el segundo sistema de recomendación, la consigna era la siguiente:
+
+![Consigna del segundo sistema de recomendación](img/sistema_recomendacion_user_item.png)
+
+![Explicación informal del primer sistema de recomendación](img/user_item.jpg)
+
+Para poder desarrollar este sistema de recomendación, decidí usar tanto la tabla de user_reviews cómo la tabla de steam_games.
+
+Por un lado, en la tabla de user_reviews, lo que decidí hacer fué filtrar el conjunto de datos primero por aquellos juegos que acumulasen más de 100 reseñas, ya que, si más de 100 personas habían reseñado determinado juego, significaba que tenía cierta relevancia, y por consecuencia, al ser menos cantidad de juegos los restantes, esto me permitía optimizar muchísimo el rendimiento. Esto me redujó el conjunto de datos en casi un 44% (pasando de 59305 filas a 33714).
+
+También filtré este conjunto de datos por los usuarios, dejando sólo aquellos que hayan hecho más de 5 reseñas, lo cuál me redujo la cantidad de usuarios en casi un 98% (pasando de 19620 usuarios a tan sólo 456).
+
+Con estas transformaciones, reduje el conjunto de datos original casi un 95% (pasando de 59305 filas a tan sólo 3089), resultando con 456 usuarios y 99 juegos.
+
+Por otro lado, usé la tabla de steam_games para determinar el nombre del juego con el ID correspondiente, ya que si recordamos, en la tabla de reseñas no estaba disponible el nombre del juego, sino únicamente su ID. Cuando hice el merge, algunos ID se vé que no estaban disponibles en la tabla de steam_games y me terminé quedando con 82 juegos.
+
+Toda la explicación técnica para la creación de tablas y su respectiva justificación la pueden encontrar en [este archivo,](sistema_recomendacion/user_item.ipynb) mientras que todo el desarrollo de la función se puede encontrar en [este otro archivo.](sistema_recomendacion/user_item_func.ipynb)
 
 ---
 ---
